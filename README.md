@@ -2,7 +2,7 @@
 
 ## Tsoha-harjoitustyö
 
-![luokkakaavio](http://yuml.me/715869f5.png)
+![luokkakaavio](http://yuml.me/4ff6941f.png)
 
 Ruokaa -nettisivulla käyttäjä voi selata ja etsiä ruokia, joita muut käyttäjät ovat sinne luoneet.
 Jotta voi luoda ruoan, pitää olla luonut tunnuksen sekä kirjautunut järjestelmään.
