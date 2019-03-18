@@ -2,24 +2,56 @@
 
 ## Tsoha-harjoitustyö
 
-![luokkakaavio](http://yuml.me/4ff6941f.png)
-
 [Ruokaa-app](https://ruokaa-app.herokuapp.com "Ruokaa")
 
+[Tietokantakaavio](documentation/database_diagram.md "Tietokantakaavio"), 
+[Käyttötapauksia](documentation/user_stories.md "Käyttötapauksia")
+
 Ruokaa -nettisivulla käyttäjä voi selata ja etsiä ruokia, joita muut käyttäjät ovat sinne luoneet.
-Jotta voi luoda ruoan, pitää olla luonut tunnuksen sekä kirjautunut järjestelmään.
-Ruoalla on tieto sen luoneesta käyttäjästä. Käyttäjä voi poistaa omia ruokiaan.
-Käyttäjä pystyy muokkaamaan ruoan nimeä ja ohjetta.(CRUD)
-Käyttäjä pystyy päivittämään omia tietojaan, sekä myös poistamaan tilinsä. (CRUD)
-Käyttäjä pystyy myös kommentoimaan jokaista ruokaa, sekä antamaan tykkäyksen (tai miinuksen) ruoille.
-Jos jonkin ruoan tykkäykset menee tarpeeksi miinuksella, se piilotetaan kokonaan.
 
-Ruoalle myös syötetään raaka-aineita. Jos kyseistä raaka-ainetta ei vielä ole olemassa, luodaan sellainen. (Jos raaka-aineella ei ole ruokia, poistetaan se)
+Kirjautuneena käyttäjä voi:
+* luoda ruoan
+* poistaa oman ruokansa
+* muokata oman ruokansa tietoja:
+  * nimeä
+  * kestoa
+  * ohjetta
+  * raaka-aineita
+* tykätä ruoista tai antaa miinuksen (+1 / -1)
+* kommentoida jonkun toisen ruokaa (yhden kerran / ruoka)
+  * muokata tai poistaa oman kommenttinsa
+* vaihtaa omaa sähköpostiansa / nimeänsä / salasanaansa
+* poistaa oman tunnuksensa
 
-Ruokanäkymässä ruoat listataan aakkosjärjestyksessä nimen mukaan. Näytetään nimi ja tykkäykset ja kesto.
+Ei-kirjautunut käyttäjä voi:
+* luoda uuden käyttäjän
+* kirjautua sisään (tunnuksena toimii sähköposti)
 
-Ruoan nimeä painettaessa päästään katsomaan ruoan kaikkia tietoja. Tässä näkymässä voi myös kommentoida ruokia sekä antaa tykkäyksiä tai miinuksia.
+Kaikki voivat:
+* tarkastella ruokia listalta
+* arpoa itselleen ruokalistan
 
-Ruokia etsittäessä voidaan määritellä montaako ruokaa etsitään, sekä jokaiselle (tai kaikille) valmistuksen maksimikesto, sekä yksi raaka-aine joka ruoan tulee sisältää.
+Ylläpitäjä voi:
+* tehdä vähän kaikkea xD
 
-Ohjelma pystyy myös arpomaan ruokien järjestyksen näkymässä.
+Näkymät:
+* ylävalikko (listanäkymä, lisää ruoka, kirjaudu / omat tiedot)
+* listanäkymä
+* ruokanäkymä (yksittäiselle ruoalle)
+* ruoan lisäysnäkymä
+* käyttäjänäkymä (kirjautuneelle käyttäjälle) / kirjautumisnäkymä (ei-kirjautuneelle)
+
+Muuta:
+Jos jonkin ruoan tykkäykset menee tarpeeksi miinukselle, se piilotetaan kokonaan.
+
+Listanäkymässä ruoat listataan aakkosjärjestyksessä nimen mukaan. Näytetään nimi, ruoan valmistusaika ja tykkäykset.
+Painamalla tykkäykset, järjestetään lista tykkäysten mukaan. Tai nimeä, järjestetään nimen mukaan.
+
+Listanäkymässä voi myös filtteröidä *(etsiä)* ruokia valmistusajan tai yhden raaka-aineen ja nimen mukaan. *(saako listan päivittymään reaaliajassa?)*
+
+Ruoan nimeä painettaessa päästään ruoan Ruokanäkymään. Tässä näkymässä voi myös kommentoida ruokia sekä antaa tykkäyksiä tai miinuksia.
+Jos ruoka on oma, voidaan sen tietoja muuttaa täällä tai poistaa ruoka kokonaan.
+Ruokanäkymässä näkyy ruoan luoneen käyttäjän nimi.
+
+Käyttäjänäkymässä käyttäjä voi tarkastella omia tietojaan sekä muuttaa niitä. Täällä myös näkyvät ruoat jotka käyttäjä on luonut (ja voi siirtyä niiden tietoihin).
+

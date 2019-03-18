@@ -2,15 +2,20 @@
 
 {% block body %}
 <table>
-  <tr>
-    <th>Ruoka</th>
-    <th>Valmistusaika</th>
-  </tr>
-  {% for food in foods %}
-  <tr>
-    <td>{{ food.name }}</td>
-    <td>{{ food.preparing_time }}</td>
-  </tr>
-  {% endfor %}
+    <tr>
+        <th>Ruoka</th>
+        <th>Valmistusaika</th>
+        <th>Muuta nimeä</th>
+    </tr>
+    {% for food in foods %}
+    <tr>
+        <td>{{ food.name }}</td>
+        <td>{{ food.preparing_time }}</td>
+        <form method="POST" action="{{ url_for('foods_set_name', food_id=food.id) }}">
+            <td><input type="text" name="name" /></td>
+            <td><input type="submit" value="Muuta nimi" /></td>
+        </form>
+    </tr>
+    {% endfor %}
 </table>
 {% endblock %}

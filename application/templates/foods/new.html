@@ -2,28 +2,28 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('foods_create') }}">
-  <table>
-    <tr>
-      <td>Ruoka:</td>
-      <td><input type="text" name="name"/></td>
-    </tr>
-    <tr>
-      <td>Kesto:</td>
-      <td>
-        <input type="radio" name="length" value=15> 15 min<br>
-        <input type="radio" name="length" value=30> 30 min<br>
-        <input type="radio" name="length" value=45> 45 min<br>
-        <input type="radio" name="length" value=60> 60 min<br>
-      </td>
-    </tr>
-    <tr>
-      <td>Ohje:</td>
-      <td><textarea rows="10" cols="30" type="text" name="recipe"></textarea></td>
-    </tr>
-    <tr>
-      <td/>
-      <td><input type="submit" value"Lisää"></td>
-    </tr> 
-  </table>
+    <table>
+        <tr>
+            <td>Ruoka:</td>
+            <td><input type="text" name="name" /></td>
+        </tr>
+        <tr>
+            <td>Kesto:</td>
+            <td>
+                <input type="radio" name="length" value=15> 15 min<br>
+                <input type="radio" name="length" value=30> 30 min<br>
+                <input type="radio" name="length" value=45> 45 min<br>
+                <input type="radio" name="length" value=60> 60 min<br>
+            </td>
+        </tr>
+        <tr>
+            <td>Ohje:</td>
+            <td><textarea rows="10" cols="30" type="text" name="recipe"></textarea></td>
+        </tr>
+        <tr>
+            <td />
+            <td><input type="submit" value"Lisää"></td>
+        </tr>
+    </table>
 </form>
 {% endblock %}

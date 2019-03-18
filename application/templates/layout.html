@@ -6,6 +6,10 @@
 	</head>
 
 	<body>
+		<ul>
+			<li><a href="{{ url_for('foods_index') }}">List foods</a></li>
+			<li><a href="{{ url_for('foods_form') }}">Add a food</a></li>
+		</ul>
 		{% block body %}
 		<p>
 			Tähän tuodaan sisältö muualta.
