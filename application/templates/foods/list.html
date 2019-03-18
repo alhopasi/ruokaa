@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<table>
+  <tr>
+    <th>Ruoka</th>
+    <th>Valmistusaika</th>
+  </tr>
+  {% for food in foods %}
+  <tr>
+    <td>{{ food.name }}</td>
+    <td>{{ food.preparing_time }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
