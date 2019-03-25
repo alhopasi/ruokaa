@@ -4,21 +4,37 @@
 <form method="POST" action="{{ url_for('foods_create') }}">
     <table>
         <tr>
-            <td>Ruoka:</td>
-            <td><input type="text" name="name" /></td>
-        </tr>
-        <tr>
-            <td>Kesto:</td>
+            <td> {{ newFoodForm.name.label }}:</td>
+            <td> {{ newFoodForm.name }} </td>
             <td>
-                <input type="radio" name="length" value=15> 15 min<br>
-                <input type="radio" name="length" value=30> 30 min<br>
-                <input type="radio" name="length" value=45> 45 min<br>
-                <input type="radio" name="length" value=60> 60 min<br>
+                <ul>
+                    {% for error in newFoodForm.name.errors %}
+                    <li>{{ error }} </li>
+                    {% endfor %}
+                </ul>
             </td>
         </tr>
         <tr>
-            <td>Ohje:</td>
-            <td><textarea rows="10" cols="30" type="text" name="recipe"></textarea></td>
+            <td> {{ newFoodForm.duration.label }}:</td>
+            <td> {{ newFoodForm.duration }} </td>
+            <td>
+                <ul>
+                    {% for error in newFoodForm.duration.errors %}
+                    <li>{{ error }} </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td> {{ newFoodForm.recipe.label }}:</td>
+            <td> {{ newFoodForm.recipe(rows="10", cols="30") }} </td>
+            <td>
+                <ul>
+                    {% for error in newFoodForm.recipe.errors %}
+                    <li>{{ error }} </li>
+                    {% endfor %}
+                </ul>
+            </td>
         </tr>
         <tr>
             <td />
