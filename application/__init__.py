@@ -1,25 +1,36 @@
-# Tuodaan Flask käyttön
 from flask import Flask
 app = Flask(__name__)
 
-# Tuodaan SQLAlchemy käyttöön
 from flask_sqlalchemy import SQLAlchemy
-# Käytetään foods.db-nimistä SQLite-tietokantaa
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///foods.db"
-# Pyydetään SQLAlchemyä tulostamaan kaikki SQL-kyselyt
 app.config["SQLALCHEMY_ECHO"] = True
-# Joku asetus mistä tuli valitusta
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Luodaan db-olio.
 db = SQLAlchemy(app)
 
-# Lisätään näkymät
 from application import views
+
+from application.foods import models
 from application.foods import views
 
-# Luetaan tietokantamallit
-from application.foods import models
+from application.auth import models
+from application.auth import views
 
-# Luodaan lopulta tarvittavat tietokantataulut
+#kirjautuminen
+from application.auth.models import User
+from os import urandom
+app.config["SECRET_KEY"] = urandom(32)
+
+from flask_login import LoginManager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+login_manager.login_view = "auth_login"
+login_manager.login_message = "Please login to use this functionality."
+
+@login_manager.user_loader
+def load_user(user_id):
+  return User.query.get(user_id)
+
+#luodaan taulut tarvittaessa
 db.create_all()
