@@ -3,12 +3,12 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.foods.models import Food
-from application.foods.forms import NewFoodForm
+from application.foods.forms import NewFoodForm, UpdateFoodForm
 
 
 @app.route("/foods/", methods=["GET"])
 def foods_index():
-    return render_template("foods/list.html", foods=Food.query.all())
+    return render_template("foods/list.html", foods=Food.query.all(), updateFoodForm = UpdateFoodForm())
 
 
 @app.route("/foods/new/")

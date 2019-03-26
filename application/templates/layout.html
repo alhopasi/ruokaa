@@ -8,15 +8,22 @@
 	<body>
 		{% if current_user.is_authenticated %}
 		<p>
-			Kirjautunut nimellä {{ current_user.name }}. <a href="{{ url_for('auth_logout') }}">Kirjaudu ulos</a>
+			Kirjautunut nimellä {{ current_user.name }}. 
+			<a href="{{ url_for('auth_view_user') }}">Profiili</a>
+			<a href="{{ url_for('auth_logout') }}">Kirjaudu ulos</a>
 		</p>
 		{% else %}
-		<a href="{{ url_for('auth_login') }}">Kirjaudu</a>
+		<p>
+			<a href="{{ url_for('account_new') }}">Rekisteröidy</a>
+			<br>
+			<a href="{{ url_for('auth_login') }}">Kirjaudu</a>
+			</p>
 		{% endif %}
 
 		<ul>
 			<li><a href="{{ url_for('foods_index') }}">Näytä ruoat</a></li>
 			<li><a href="{{ url_for('foods_form') }}">Lisää uusi</a></li>
+			<li><a href="{{ url_for('list_users') }}">Näytä käyttäjät</a></li>
 		</ul>
 		{% block body %}
 		<p>

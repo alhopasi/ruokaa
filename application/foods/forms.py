@@ -8,3 +8,9 @@ class NewFoodForm(FlaskForm):
 
     class Meta:
         csrf = False
+
+class UpdateFoodForm(FlaskForm):
+    name = StringField("Ruoka", [validators.Length(min=3)])
+
+    class Meta:
+        csrf = False

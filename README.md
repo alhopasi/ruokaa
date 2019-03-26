@@ -7,6 +7,12 @@
 [Tietokantakaavio](documentation/database_diagram.md "Tietokantakaavio"), 
 [Käyttötapauksia](documentation/user_stories.md "Käyttötapauksia")
 
+Voit luoda oman käyttäjän tai kokeilla testikäyttäjällä:
+
+käyttäjätunnus: **admin**
+
+salasana: **admin**
+
 Ruokaa -nettisivulla käyttäjä voi selata ja etsiä ruokia, joita muut käyttäjät ovat sinne luoneet.
 
 Kirjautuneena käyttäjä voi:

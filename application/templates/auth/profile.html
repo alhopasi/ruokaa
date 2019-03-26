@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h2>Katsele tai muuta tietojasi</h2>
+<form method="POST" action="{{ url_for('account_update') }}">
+  <table>
+    <tr>
+      <td>Nimi </td>  
+      <td> {{ user.name }} </td>
+      <td> {{ accountForm.name }} </td>
+      <td>
+          <ul>
+              {% for error in accountForm.name.errors %}
+              <li>{{ error }} </li>
+              {% endfor %}
+          </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Käyttäjätunnus </td>
+      <td> {{ user.username }} </td>
+      <td> {{ accountForm.username }} </td>
+      <td>
+          <ul>
+              {% for error in accountForm.username.errors %}
+              <li>{{ error }} </li>
+              {% endfor %}
+          </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>Salasana </td>
+      <td> {{ pwd }} </td>
+      <td> {{ accountForm.password }} </td>
+      <td>
+          <ul>
+              {% for error in accountForm.password.errors %}
+              <li>{{ error }} </li>
+              {% endfor %}
+          </ul>
+      </td>
+    </tr>
+    <tr>
+      <td />
+      <td />
+      <td><input type="submit" value="Muuta"></td>
+    </tr>
+  </table>
+</form>
+<form action="{{ url_for('delete_user') }}">
+  <input type="submit" onclick="return confirm('Poistetaanko tili?\nKaikki tietosi katoavat!')" value="Poista tili" />
+</form>
+{% endblock %}

@@ -1,36 +1,37 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('foods_create') }}">
+<h2>Luo uusi käyttäjä</h2>
+<form method="POST" action="{{ url_for('account_create') }}">
     <table>
         <tr>
-            <td> {{ newFoodForm.name.label }}:</td>
-            <td> {{ newFoodForm.name }} </td>
+            <td> {{ newAccountForm.name.label }}:</td>
+            <td> {{ newAccountForm.name }} </td>
             <td>
                 <ul>
-                    {% for error in newFoodForm.name.errors %}
+                    {% for error in newAccountForm.name.errors %}
                     <li>{{ error }} </li>
                     {% endfor %}
                 </ul>
             </td>
         </tr>
         <tr>
-            <td> {{ newFoodForm.duration.label }}:</td>
-            <td> {{ newFoodForm.duration }} </td>
+            <td> {{ newAccountForm.username.label }}:</td>
+            <td> {{ newAccountForm.username }} </td>
             <td>
                 <ul>
-                    {% for error in newFoodForm.duration.errors %}
+                    {% for error in newAccountForm.username.errors %}
                     <li>{{ error }} </li>
                     {% endfor %}
                 </ul>
             </td>
         </tr>
         <tr>
-            <td> {{ newFoodForm.recipe.label }}:</td>
-            <td> {{ newFoodForm.recipe(rows="10", cols="30") }} </td>
+            <td> {{ newAccountForm.password.label }}:</td>
+            <td> {{ newAccountForm.password }} </td>
             <td>
                 <ul>
-                    {% for error in newFoodForm.recipe.errors %}
+                    {% for error in newAccountForm.password.errors %}
                     <li>{{ error }} </li>
                     {% endfor %}
                 </ul>
