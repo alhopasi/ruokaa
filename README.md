@@ -9,14 +9,14 @@
 
 Voit luoda oman käyttäjän tai kokeilla testikäyttäjällä:
 
-käyttäjätunnus: **admin**
+käyttäjätunnus: *admin*
 
-salasana: **admin**
+salasana: *admin*
 
 Ruokaa -nettisivulla käyttäjä voi selata ja etsiä ruokia, joita muut käyttäjät ovat sinne luoneet.
 
 Kirjautuneena käyttäjä voi:
-* luoda ruoan
+* luoda ruoan **(tehty)**
 * poistaa oman ruokansa
 * muokata oman ruokansa tietoja:
   * nimeä
@@ -26,26 +26,26 @@ Kirjautuneena käyttäjä voi:
 * tykätä ruoista tai antaa miinuksen (+1 / -1)
 * kommentoida jonkun toisen ruokaa (yhden kerran / ruoka)
   * muokata tai poistaa oman kommenttinsa
-* vaihtaa omaa sähköpostiansa / nimeänsä / salasanaansa
-* poistaa oman tunnuksensa
+* vaihtaa omaa tunnustansa / nimeänsä / salasanaansa **(tehty)**
+* poistaa oman tilinsä **(tehty)**
 
 Ei-kirjautunut käyttäjä voi:
-* luoda uuden käyttäjän
-* kirjautua sisään (tunnuksena toimii sähköposti)
+* luoda uuden käyttäjän **(tehty)**
+* kirjautua sisään (tunnuksena toimii sähköposti) **(tehty)** - tunnus voi olla mitä tahansa
 
 Kaikki voivat:
-* tarkastella ruokia listalta
+* tarkastella ruokia listalta **(tehty)**
 * arpoa itselleen ruokalistan
 
 Ylläpitäjä voi:
-* tehdä vähän kaikkea xD
+* tehdä vähän kaikkea
 
 Näkymät:
-* ylävalikko (listanäkymä, lisää ruoka, kirjaudu / omat tiedot)
-* listanäkymä
+* ylävalikko (listanäkymä, lisää ruoka, kirjaudu / omat tiedot) **(tehty)**
+* listanäkymä **(työn alla)**
 * ruokanäkymä (yksittäiselle ruoalle)
-* ruoan lisäysnäkymä
-* käyttäjänäkymä (kirjautuneelle käyttäjälle) / kirjautumisnäkymä (ei-kirjautuneelle)
+* ruoan lisäysnäkymä **(tehty)**
+* käyttäjänäkymä (kirjautuneelle käyttäjälle) / kirjautumisnäkymä (ei-kirjautuneelle) **(tehty)**
 
 Muuta:
 Jos jonkin ruoan tykkäykset menee tarpeeksi miinukselle, se piilotetaan kokonaan.
