@@ -9,11 +9,14 @@
 
 Voit luoda oman käyttäjän tai kokeilla testikäyttäjällä:
 
-käyttäjätunnus: *admin*
+käyttäjätunnus ja salasana: *admin*, *admin*
 
-salasana: *admin*
-
-Ruokaa -nettisivulla käyttäjä voi selata ja etsiä ruokia, joita muut käyttäjät ovat sinne luoneet.
+**Kuvaus:**
+Ruokaa -sovellukseen rekisteröityneet käyttäjät voivat tallentaa ruokia. Ruoka koostuu raaka-aineista, valmistusajasta, sekä ohjeesta. Käyttäjät voivat selata ja etsiä ruokia, antaa niille tykkäyksiä sekä kommentoida niitä.
+Ruoan hakeminen tapahtuu ruoan nimen tai raaka-aineiden perusteella.
+Ruoat voi listata nimen tai tykkäysten mukaan.
+Omia ruokiaan voi muokata tai ne voi poistaa.
+Käyttäjä voi myös muokata omia tietojaan sekä poistaa tilinsä, jolloin kaikki omat kommentit / ruoat poistuvat järjestelmästä.
 
 Kirjautuneena käyttäjä voi:
 * luoda ruoan **(tehty)**
