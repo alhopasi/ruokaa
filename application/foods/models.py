@@ -44,6 +44,12 @@ class Food(Base):
         u = User.query.get(self.account_id)
         return u
 
+    def deleteIngredient(self, ingredient_id):
+        stmt = text("DELETE FROM Ingredients"
+                   " WHERE Ingredients.ingredient_id = " + str(ingredient_id) + ""
+                   " AND Ingredients.food_id = " + str(self.id) )
+
+        db.engine.execute(stmt)
     
 
 class Ingredient(Base):

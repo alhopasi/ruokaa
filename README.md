@@ -47,7 +47,7 @@ Ylläpitäjä voi:
 Näkymät:
 * ylävalikko (listanäkymä, lisää ruoka, kirjaudu / omat tiedot) **(tehty)**
 * listanäkymä **(työn alla)**
-* ruokanäkymä (yksittäiselle ruoalle)
+* ruokanäkymä (yksittäiselle ruoalle) **(työn alla)** (tee erillinen nappula, mistä voi muokata ruoan tietoja)
 * ruoan lisäysnäkymä **(tehty)**
 * käyttäjänäkymä (kirjautuneelle käyttäjälle) / kirjautumisnäkymä (ei-kirjautuneelle) **(tehty)**
 

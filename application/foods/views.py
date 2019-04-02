@@ -59,7 +59,7 @@ def foods_create():
     return redirect(url_for("foods_index"))
 
 
-@app.route("/foods/<food_id>/", methods=["POST"])
+@app.route("/foods/<food_id>/", methods=["POST"])  ## Setname!
 @login_required
 def foods_set_name(food_id):
     f = Food.query.get(food_id)
@@ -68,20 +68,32 @@ def foods_set_name(food_id):
 
     return redirect(url_for("foods_index"))
 
-@app.route("/foods/food/", methods=["POST"])
+@app.route("/foods/food/", methods=["POST"])  ## TEE PÄIVITYSTOIMINNALLISUUS nimelle ja ohjeelle ja raaka-aineen lisäykselle
 @login_required
 def foods_update(food, ingredients, user):
-    return render_template("foods/food.html", food = f, ingredients = i, user = u)
-def food_delete_ingredient(food_id, ingredient_id):
-    return redirect(url_for("food_view", food_id=food.id))
+    form = UpdateFoodForm(request.form)
+    return render_template("foods/food.html", food = f, ingredients = i, user = u, updateFoodForm = form)
+
+@app.route("/foods/<food_id>/<ingredient_id>")
+@login_required
+def foods_delete_ingredient(food_id, ingredient_id):
+    f = Food.query.get(food_id)
+    f.deleteIngredient(ingredient_id)
+    return redirect(url_for("food_view", food_id=food_id))
 
 
 @app.route("/foods/delete/<food_id>")
 @login_required
-def food_delete():
-    # User.query.filter(User.id == current_user.id).delete()
-    # db.session().commit()
-    
-    # logout_user()
+def foods_delete(food_id):
+    f = Food.query.get(food_id)
+    i = f.findIngredients()
+    print("**************")
+    print(i)
+    print("**************")
+    for ingredient in i:
+        print(ingredient)
+        f.deleteIngredient(ingredient['id'])
+    Food.query.filter(Food.id == food_id).delete()
+    db.session().commit()
 
     return redirect(url_for("foods_index"))
