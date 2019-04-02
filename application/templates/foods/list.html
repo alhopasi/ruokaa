@@ -8,14 +8,13 @@
             <th>Muuta nimeä</th>
         </tr>
         {% for food in foods %}
-        <tr>
-            <td>{{ food.name }}</td>
-            <td>{{ food.preparing_time }}</td>
-            <form method="POST" action="{{ url_for('foods_set_name', food_id=food.id) }}">
-                <td> {{ updateFoodForm.name }} </td>
-                <td><input type="submit" value="Muuta nimi" /></td>
-            </form>
-        </tr>
+        
+            <tr>
+                    
+                        <td><a href="{{ url_for('food_view', food_id=food.id) }}">
+                            {{ food.name }}</a></td>
+                <td>{{ food.preparing_time }}</td>
+            </tr>
         {% endfor %}
     </table>
 {% endblock %}

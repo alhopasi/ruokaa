@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    {% if not food %}
+        <h2>Ruokaa ei löytynyt</h2>
+    {% else %}
+        <table>
+            <tr>
+                <td align="center"><h2>{{ food.name }}</h2></td>
+        
+                {% if current_user == user %} 
+                <form method="POST" action="{{ url_for('foods_update', food_id=food.id) }}">
+                    <td> {{ updateFoodForm.name }} </td>
+                    <td><input type="submit" value="Muuta nimi" /></td>
+                    <td>
+                        <ul>
+                            {% for error in updateFoodForm.name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </form>
+                {% endif %}
+            </tr>
+            <tr><th>Raaka-aineet</th></tr>
+            {% for ingredient in ingredients %}
+            <tr align="center">
+                <td>{{ ingredient.name }}</td>
+                {% if current_user == user %} 
+                <td>
+                    <form action="{{ url_for('food_delete_ingredient, food_id=food.id, ingredient_id=ingredient.id') }}">
+                        <input type="submit" onclick="return confirm('Poistetaanko raaka-aine?')" value="Poista" />
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            {% if current_user == user %} 
+            <form method="POST" action="{{ url_for('foods_update', food_id=food.id) }}">
+                <td />
+                <td align="center"> {{ updateFoodForm.ingredient }} </td>
+                <td><input type="submit" value="Lisää raaka-aine" /></td>
+                <td>
+                    <ul>
+                        {% for error in updateFoodForm.ingredient.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </form>
+            {% endif %}
+            
+        <tr><td></br></td></tr>
+        
+        <tr><th>Ohje</th></tr>
+        <tr align="center">
+            <td style="width: 300px; word-wrap: break-word;">{{ food.recipe }}</td>
+            {% if current_user == user %} 
+            <form method="POST" action="{{ url_for('foods_update', food_id=food.id) }}">
+                <td> {{ updateFoodForm.recipe }} </td>
+                <td><input type="submit" value="Muuta ohjetta" /></td>
+                <td>
+                    <ul>
+                        {% for error in updateFoodForm.recipe.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </form>
+            {% endif %}
+        </tr>
+        <tr><td></br></td></tr>
+
+        <tr><th>Luonut</th></tr>
+        <tr><td align="center">{{ user.name }} </td></tr>
+        {% if current_user == user %} 
+        <tr>
+            <td align="center">
+                <form action="{{ url_for('food_delete', food_id = food.id) }}">
+                    <input type="submit" onclick="return confirm('Poistetaanko ruoka?')" value="Poista ruoka" />
+                </form>
+            </td>
+        </tr>
+        </table>
+        {% endif %}
+        
+    {% endif %}
+{% endblock %}

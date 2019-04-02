@@ -31,6 +31,7 @@ Kirjautuneena käyttäjä voi:
   * muokata tai poistaa oman kommenttinsa
 * vaihtaa omaa tunnustansa / nimeänsä / salasanaansa **(tehty)**
 * poistaa oman tilinsä **(tehty)**
+* poiston yhteydessä tiedot katoavat
 
 Ei-kirjautunut käyttäjä voi:
 * luoda uuden käyttäjän **(tehty)**
