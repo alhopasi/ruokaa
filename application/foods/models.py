@@ -31,7 +31,7 @@ class Food(Base):
         foodId = self.getId()
         stmt = text("SELECT Ingredient.id, Ingredient.name FROM Ingredient"
                     " JOIN Ingredients ON Ingredients.ingredient_id = Ingredient.id"
-                    " WHERE Ingredients.food_id = " + str(foodId) )
+                    " WHERE Ingredients.food_id = :food_id" ).params(food_id=foodId)
         res = db.engine.execute(stmt)
 
         response = []
@@ -46,10 +46,21 @@ class Food(Base):
 
     def deleteIngredient(self, ingredient_id):
         stmt = text("DELETE FROM Ingredients"
-                   " WHERE Ingredients.ingredient_id = " + str(ingredient_id) + ""
-                   " AND Ingredients.food_id = " + str(self.id) )
+                   " WHERE Ingredients.ingredient_id = :ingredient_id"
+                   " AND Ingredients.food_id = :self_id").params(ingredient_id=ingredient_id, self_id=self.id)
 
         db.engine.execute(stmt)
+    
+    @staticmethod
+    def getFoodCount():
+        stmt = text("SELECT Food.account_id, COUNT(*) AS foods FROM Food"
+                    " GROUP BY Food.account_id")
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"id":row[0], "foods":row[1]})
+        
+        return response
     
 
 class Ingredient(Base):

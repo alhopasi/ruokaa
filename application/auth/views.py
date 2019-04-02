@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 
 from application import app, db
+from application.foods.models import Food
 from application.auth.models import User
 from application.auth.forms import LoginForm, NewAccountForm, UpdateAccountForm
 
@@ -92,4 +93,5 @@ def delete_user():
 @app.route("/users/")
 @login_required
 def list_users():
-    return render_template("auth/list.html", users=User.query.all())
+    foodCount = Food.getFoodCount()
+    return render_template("auth/list.html", users=User.query.all(), foodCount = foodCount)

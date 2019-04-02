@@ -87,11 +87,7 @@ def foods_delete_ingredient(food_id, ingredient_id):
 def foods_delete(food_id):
     f = Food.query.get(food_id)
     i = f.findIngredients()
-    print("**************")
-    print(i)
-    print("**************")
     for ingredient in i:
-        print(ingredient)
         f.deleteIngredient(ingredient['id'])
     Food.query.filter(Food.id == food_id).delete()
     db.session().commit()

@@ -1,14 +1,27 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <table>
+<table class="table table-striped">
+    <thead>
         <tr>
-            <th>Käyttäjät</th>
+        <th scope="col">Nimi</th>
+        <th scope="col">Ruokia</th>
         </tr>
+    </thead>
+    <tbody>
         {% for user in users %}
         <tr>
             <td>{{ user.name }}</td>
+            <td>
+                {% for foodC in foodCount %}
+                    {% if foodC.id == user.id %}
+                        {{ foodC.foods }}
+                    {% endif %}
+                {% endfor %}
+            </td>
         </tr>
         {% endfor %}
+    </tbody>
     </table>
+<table>
 {% endblock %}
