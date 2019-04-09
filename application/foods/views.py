@@ -58,26 +58,56 @@ def foods_create():
 
     return redirect(url_for("foods_index"))
 
-
-@app.route("/foods/<food_id>/", methods=["POST"])  ## Setname!
+@app.route("/foods/<food_id>/", methods=["POST"])  ## TEE PÄIVITYSTOIMINNALLISUUS nimelle ja ohjeelle ja raaka-aineen lisäykselle
 @login_required
-def foods_set_name(food_id):
+def foods_update(food_id):
     f = Food.query.get(food_id)
-    f.name = request.form.get("name")
-    db.session().commit()
+    
+    if not f.account_id == current_user.id:
+        return redirect(url_for("food_view", food_id=f.id))
 
-    return redirect(url_for("foods_index"))
-
-@app.route("/foods/food/", methods=["POST"])  ## TEE PÄIVITYSTOIMINNALLISUUS nimelle ja ohjeelle ja raaka-aineen lisäykselle
-@login_required
-def foods_update(food, ingredients, user):
+    i = f.findIngredients()
+    u = f.getUser()
     form = UpdateFoodForm(request.form)
-    return render_template("foods/food.html", food = f, ingredients = i, user = u, updateFoodForm = form)
+    
+    if not form.validate():
+        return render_template("foods/food.html", food=f, ingredients=i, user=u, updateFoodForm=form)
+    
+    name = form.name.data
+    if name:
+        f.name = name
+        form.name.data = ""
+    ingredient = form.ingredient.data
+    if ingredient:
+        if len(f.findIngredients()) >= 4:
+            form.ingredient.errors.append("ruoalla on jo 4 raaka-ainetta")
+            return render_template("foods/food.html", food=f, ingredients=i, user=u, updateFoodForm=form)
+        newI = Ingredient.findIngredient(ingredient)
+        if newI not in f.ingredients:
+            f.addIngredient(ingredient_id=newI.getId())
+            i.append(newI)
+            form.ingredient.data = ""
+        else:
+            form.ingredient.errors.append("raaka-aine on jo lisätty")
+            return render_template("foods/food.html", food=f, ingredients=i, user=u, updateFoodForm=form)
+    
+    recipe = form.recipe.data
+    if recipe:
+        f.recipe = recipe
+        form.recipe.data = ""
+
+    db.session().commit
+
+    return render_template("foods/food.html", food=f, ingredients=i, user=u, updateFoodForm=form)
 
 @app.route("/foods/<food_id>/<ingredient_id>")
 @login_required
 def foods_delete_ingredient(food_id, ingredient_id):
     f = Food.query.get(food_id)
+
+    if not f.account_id == current_user.id:
+        return redirect(url_for("food_view", food_id=f.id))
+
     f.deleteIngredient(ingredient_id)
     return redirect(url_for("food_view", food_id=food_id))
 
@@ -86,6 +116,10 @@ def foods_delete_ingredient(food_id, ingredient_id):
 @login_required
 def foods_delete(food_id):
     f = Food.query.get(food_id)
+
+    if not f.account_id == current_user.id:
+        return redirect(url_for("foods_index"))
+
     i = f.findIngredients()
     for ingredient in i:
         f.deleteIngredient(ingredient['id'])

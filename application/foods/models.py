@@ -50,7 +50,12 @@ class Food(Base):
                    " AND Ingredients.food_id = :self_id").params(ingredient_id=ingredient_id, self_id=self.id)
 
         db.engine.execute(stmt)
-    
+
+    def addIngredient(self, ingredient_id):
+        stmt = text("INSERT INTO Ingredients (food_id, ingredient_id)"
+                    "VALUES (:food_id, :ingredient_id)").params(food_id=self.id, ingredient_id=ingredient_id)
+        db.engine.execute(stmt)
+
     @staticmethod
     def getFoodCount():
         stmt = text("SELECT Food.account_id, COUNT(*) AS foods FROM Food"
@@ -84,4 +89,5 @@ class Ingredient(Base):
             
         return i
 
-    
+    def getId(self):
+        return self.id
