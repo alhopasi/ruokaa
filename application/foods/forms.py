@@ -14,12 +14,3 @@ class NewFoodForm(FlaskForm):
 
     class Meta:
         csrf = False
-
-class UpdateFoodForm(FlaskForm):
-    name = StringField("Ruoka", validators=[validators.Optional(), validators.Length(min=3, max=20)])
-    ingredient = StringField("Raaka-aine", validators=[validators.Optional(), validators.Length(max=20, min = 3)])
-    recipe = TextAreaField("Ohje", validators=[validators.Optional(), validators.Length(min=10, max=4000)])
-    duration = SelectField("Kesto", choices = [('15','15 min'),('30','30 min'),('45','45 min'),('60','60 min')], validators = [validators.Optional(), validators.DataRequired('Please choose a duration')])
-
-    class Meta:
-        csrf = False

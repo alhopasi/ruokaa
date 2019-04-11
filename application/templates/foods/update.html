@@ -89,14 +89,18 @@
                     </td>
                 </tr>
                 <tr>
-                <td></td>
-                <td><input type="submit" value="Talleta" /></td>
-                <tr><td></td><td>
-                        <form action="{{ url_for('food_view', food_id = food.id) }}">
-                                <input type="submit" value="Peruuta" />
-                            </form>
-                </td></tr>
+                    <td></td>
+                    <td><input type="submit" value="Talleta" /></td>
                 </tr>
+            </form>
+            <form action="{{ url_for('food_view', food_id = food.id) }}">
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Peruuta" />
+                    </td>            
+                </tr>
+                
             </form>
             <tr><td><br></td></tr>
             <tr>

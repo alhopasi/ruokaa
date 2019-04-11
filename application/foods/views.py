@@ -21,7 +21,7 @@ def food_view(food_id):
 
     i = f.findIngredients()
     u = f.getUser()
-    return render_template("foods/food.html", food = f, ingredients = i, user = u, newFoodForm = NewFoodForm())
+    return render_template("foods/food.html", food = f, ingredients = i, user = u)
 
 @app.route("/foods/edit/<food_id>/", methods=["GET"])
 def food_edit(food_id):
@@ -31,12 +31,23 @@ def food_edit(food_id):
         return render_template("foods/update.html", food = None)
 
     form = NewFoodForm()
+    form.duration.default = f.preparing_time
+    form.process()
+    
     i = f.findIngredients()
     u = f.getUser()
 
     form.name.data = f.name
     form.recipe.data = f.recipe
-    form.duration.data = str(f.preparing_time) + " min"
+    ingredients_size = len(i)
+    form.ingredient1.data = i[0].get("name")
+    if ingredients_size >= 2:
+        form.ingredient2.data = i[1].get("name")
+    if ingredients_size >= 3:
+        form.ingredient3.data = i[2].get("name")
+    if ingredients_size >= 4:
+        form.ingredient4.data = i[3].get("name")
+    
 
     return render_template("foods/update.html", food = f, ingredients = i, user = u, newFoodForm = form)
 
@@ -94,6 +105,20 @@ def foods_update(food_id):
     f.name = form.name.data
     f.preparing_time = form.duration.data
     f.recipe = form.recipe.data
+    
+    i1 = Ingredient.findIngredient(form.ingredient1.data)
+    i2 = Ingredient.findIngredient(form.ingredient2.data)
+    i3 = Ingredient.findIngredient(form.ingredient3.data)
+    i4 = Ingredient.findIngredient(form.ingredient4.data)
+    
+    f.ingredients = []
+    f.ingredients.append(i1)
+    if i2 and not (i2 == i1):
+        f.ingredients.append(i2)
+    if i3 and not (i3 == (i2 or i1)):
+        f.ingredients.append(i3)
+    if i4 and not (i4 == (i3 or i2 or i1)):
+        f.ingredients.append(i4)
 
     db.session().commit()
 
