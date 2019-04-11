@@ -42,8 +42,22 @@ def account_create():
         return render_template("auth/new.html", newAccountForm = form)
 
     u = User(form.name.data, form.username.data, form.password.data)
+
+    oldUser = User.query.filter_by(username=form.username.data).first()
+    if oldUser:
+        form.username.errors.append("käyttäjätunnus on jo olemassa")
+        return render_template("auth/new.html", newAccountForm = form)
+
+    u.set_role("user")
+
+    if u.username == "admin":
+        u.set_role("admin")
+
     db.session().add(u)
     db.session().commit()
+
+    user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
+    login_user(user)
 
     return redirect(url_for("index"))
 

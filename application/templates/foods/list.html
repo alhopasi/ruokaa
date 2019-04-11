@@ -6,6 +6,7 @@
     <thead>
         <tr>
         <th scope="col">Ruoka</th>
+        <th scope="col">Tykkäyksiä</th>
         <th scope="col">Valmistusaika</th>
         </tr>
     </thead>
@@ -15,6 +16,9 @@
             <td>
                 <a href="{{ url_for('food_view', food_id=food.id) }}">
                 {{ food.name }}</a></td>
+            </td>
+            <td>
+                {{ food.countLikes() }}
             </td>
             <td>
                 {{ food.preparing_time }}

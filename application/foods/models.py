@@ -1,6 +1,7 @@
 from application import db
 from application.models import Base
 from application.auth.models import User
+from flask_login import current_user
 
 from sqlalchemy.sql import text
 
@@ -66,8 +67,25 @@ class Food(Base):
             response.append({"id":row[0], "foods":row[1]})
         
         return response
-    
 
+    def countLikes(self):
+        res = Like.query.filter_by(food_id=self.id).all()
+        total = 0
+        for like in res:
+            total += like.value
+
+        return total
+    
+    def users_like(self):
+        l = Like.query.filter_by(account_id=current_user.id, food_id=self.id).first()
+        value = ""
+        if l:
+            if l.value == 1:
+                value = "Oma tykkäys: +1"
+            elif l.value == -1:
+                value = "Oma tykkäys: -1"
+        return value
+    
 class Ingredient(Base):
     name = db.Column(db.String(20), nullable=False)
 
@@ -91,3 +109,14 @@ class Ingredient(Base):
 
     def getId(self):
         return self.id
+
+class Like(Base):
+    account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+    food_id = db.Column(db.Integer, db.ForeignKey('food.id'), nullable=False)
+    value = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, food_id, account_id, value):
+        self.value = value
+        self.food_id = food_id
+        self.account_id = account_id
+    

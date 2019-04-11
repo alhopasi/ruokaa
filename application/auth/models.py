@@ -9,7 +9,7 @@ class User(Base):
     username = db.Column(db.String(144), nullable=False)
     password = db.Column(db.String(144), nullable=False)
 
-    foods = db.relationship("Food", backref="account", lazy=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=True)
 
     def __init__(self, name, username, password):
         self.name = name
@@ -27,3 +27,34 @@ class User(Base):
     
     def is_authenticated(self):
         return True
+
+    def set_role(self, role):
+        r = Role.findRole(role)
+        self.role_id = r.id
+        db.session().commit()
+
+class Role(Base):
+    __tablename__ = "role"
+
+    name = db.Column(db.String(144), nullable=False)
+
+    def __init__(self, name):
+        self.name = name
+    
+    def get_id(self):
+        return self.id
+
+    @staticmethod
+    def findRole(name):
+        if not name:
+            return
+        name = name.lower().strip()
+        r = Role.query.filter_by(name=name).first()
+
+        if not r:
+            r = Role(name)
+            db.session().add(r)
+            db.session().commit()
+            return Role.findRole(name)
+            
+        return r

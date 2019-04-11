@@ -9,82 +9,42 @@
             <tr>
                 <td><h2>{{ food.name }}</h2></td>
                 {% if current_user == user %} 
-                <form method="POST" action="{{ url_for('foods_update', food_id=food.id) }}">
-                    <td> {{ updateFoodForm.name }} </td>
-                    <td><input type="submit" value="Muuta nimi" /></td>
-                    <td>
-                        <ul>
-                            {% for error in updateFoodForm.name.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </form>
+                <td>
+                    <form action="{{ url_for('food_edit', food_id = food.id) }}">
+                        <input type="submit" value="Muokkaa" />
+                    </form>
+                </td>
                 {% endif %}
             </tr>
+            {% if current_user.is_authenticated %}
+            <tr><td>{{ food.users_like() }}</td></tr>
+            <tr><td>Tykkää: 
+                <a href="{{ url_for('foods_like', value=1, food_id=food.id) }}">+1</a>
+                <a href="{{ url_for('foods_like', value=0, food_id=food.id) }}">0</a>
+                <a href="{{ url_for('foods_like', value=-1, food_id=food.id) }}">-1</a>
+            </td></tr>
+            {% endif %}
+            <tr><td>Tykkäykset yhteensä: {{ food.countLikes() }}</td></tr>
+            <tr><td><br></td></tr>
             <tr><td>{{ food.preparing_time }} minuuttia</td></td></tr>
             <tr><td><br></td></tr>
             <tr><th>Raaka-aineet</th></tr>
             {% for ingredient in ingredients %}
             <tr>
                 <td>{{ ingredient.name }}</td>
-                {% if current_user == user %} 
-                <td>
-                    <form action="{{ url_for('foods_delete_ingredient', food_id=food.id, ingredient_id=ingredient.id) }}">
-                        <input type="submit" onclick="return confirm('Poistetaanko raaka-aine?')" value="Poista" />
-                    </form>
-                </td>
-                {% endif %}
             </tr>
             {% endfor %}
-            {% if current_user == user %} 
-            <form method="POST" action="{{ url_for('foods_update', food_id=food.id) }}">
-                <td />
-                <td> {{ updateFoodForm.ingredient }} </td>
-                <td><input type="submit" value="Lisää raaka-aine" /></td>
-                <td>
-                    <ul>
-                        {% for error in updateFoodForm.ingredient.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </form>
-            {% endif %}
             
         <tr><td></br></td></tr>
         
         <tr><th>Ohje</th></tr>
         <tr>
             <td style="width: 300px; word-wrap: break-word;">{{ food.recipe }}</td>
-            {% if current_user == user %} 
-            <form method="POST" action="{{ url_for('foods_update', food_id=food.id) }}">
-                <td> {{ updateFoodForm.recipe }} </td>
-                <td><input type="submit" value="Muuta ohjetta" /></td>
-                <td>
-                    <ul>
-                        {% for error in updateFoodForm.recipe.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </form>
-            {% endif %}
         </tr>
         <tr><td></br></td></tr>
 
         <tr><th>Luonut</th></tr>
         <tr><td>{{ user.name }} </td></tr>
-        {% if current_user == user %} 
-        <tr>
-            <td>
-                <form action="{{ url_for('foods_delete', food_id = food.id) }}">
-                    <input type="submit" onclick="return confirm('Poistetaanko ruoka?')" value="Poista ruoka" />
-                </form>
-            </td>
-        </tr>
-        </table>
-        {% endif %}
-        
+    </table>
     {% endif %}
 {% endblock %}
