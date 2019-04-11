@@ -78,14 +78,19 @@ def account_update():
     u = User.query.get(current_user.id)
 
     f = UpdateAccountForm(request.form)
+    pwd = "*" * len(u.password)
 
     if not f.validate():
-        pwd = "*" * len(u.password)
         return render_template("auth/profile.html", accountForm = f, user = u, pwd = pwd)
+
 
     if (f.name.data):
         u.name = f.name.data
     if (f.username.data):
+        oldUser = User.query.filter_by(username=f.username.data).first()
+        if oldUser:
+            f.username.errors.append("käyttäjätunnus on jo olemassa")
+            return render_template("auth/profile.html", accountForm = f, user = u, pwd = pwd)
         u.username = f.username.data
     if (f.password.data):
         u.password = f.password.data

@@ -19,10 +19,10 @@ class NewAccountForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
 
     def empty_or_length(min=-1, max=20):
-        message = 'Pitää olla %d-%d kirjainta.' % (min, max)
+        message = 'Kentän tulee olla %d-%d kirjainta.' % (min, max)
 
         def _empty_or_length(form, field):
-            if not (len(field.data) == 0 or len(field.data) >= min) or len(field.data <= max):
+            if not (len(field.data) == 0 or (len(field.data) >= min and len(field.data) <= max)):
                 raise ValidationError(message)
 
         return _empty_or_length
