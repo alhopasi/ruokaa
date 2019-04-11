@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.foods.models import Food, Ingredient, Like
-from application.foods.forms import NewFoodForm, UpdateFoodForm
+from application.foods.forms import NewFoodForm
 
 
 @app.route("/foods/", methods=["GET"])
@@ -21,7 +21,7 @@ def food_view(food_id):
 
     i = f.findIngredients()
     u = f.getUser()
-    return render_template("foods/food.html", food = f, ingredients = i, user = u, updateFoodForm = UpdateFoodForm())
+    return render_template("foods/food.html", food = f, ingredients = i, user = u, newFoodForm = NewFoodForm())
 
 @app.route("/foods/edit/<food_id>/", methods=["GET"])
 def food_edit(food_id):
@@ -30,9 +30,15 @@ def food_edit(food_id):
     if not f:
         return render_template("foods/update.html", food = None)
 
+    form = NewFoodForm()
     i = f.findIngredients()
     u = f.getUser()
-    return render_template("foods/update.html", food = f, ingredients = i, user = u, updateFoodForm = UpdateFoodForm())
+
+    form.name.data = f.name
+    form.recipe.data = f.recipe
+    form.duration.data = str(f.preparing_time) + " min"
+
+    return render_template("foods/update.html", food = f, ingredients = i, user = u, newFoodForm = form)
 
 @app.route("/foods/new/")
 @login_required
@@ -80,41 +86,18 @@ def foods_update(food_id):
 
     i = f.findIngredients()
     u = f.getUser()
-    form = UpdateFoodForm(request.form)
+    form = NewFoodForm(request.form)
     
     if not form.validate():
-        return render_template("foods/update.html", food=f, ingredients=i, user=u, updateFoodForm=form)
-    
-    name = form.name.data
-    if name:
-        f.name = name
-        form.name.data = ""
-    ingredient = form.ingredient.data
-    if ingredient:
-        if len(f.findIngredients()) >= 4:
-            form.ingredient.errors.append("ruoalla on jo 4 raaka-ainetta")
-            return render_template("foods/update.html", food=f, ingredients=i, user=u, updateFoodForm=form)
-        newI = Ingredient.findIngredient(ingredient)
-        if newI not in f.ingredients:
-            f.addIngredient(ingredient_id=newI.getId())
-            i.append(newI)
-            form.ingredient.data = ""
-        else:
-            form.ingredient.errors.append("raaka-aine on jo lisätty")
-            return render_template("foods/update.html", food=f, ingredients=i, user=u, updateFoodForm=form)
-    
-    duration = form.duration.data
-    if duration:
-        f.preparing_time = duration
+        return render_template("foods/update.html", food=f, ingredients=i, user=u, newFoodForm=form)
 
-    recipe = form.recipe.data
-    if recipe:
-        f.recipe = recipe
-        form.recipe.data = ""
+    f.name = form.name.data
+    f.preparing_time = form.duration.data
+    f.recipe = form.recipe.data
 
-    db.session().commit
+    db.session().commit()
 
-    return render_template("foods/update.html", food=f, ingredients=i, user=u, updateFoodForm=form)
+    return redirect(url_for("food_view", food_id=f.id))
 
 @app.route("/foods/<food_id>/<ingredient_id>")
 @login_required
