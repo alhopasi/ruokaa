@@ -2,7 +2,7 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('foods_create')}}">
-    <table>
+    <table class="table">
         <tr>
             <td> {{ newFoodForm.name.label }}:</td>
             <td> {{ newFoodForm.name }} </td>
@@ -85,7 +85,9 @@
         </tr>
         <tr>
             <td />
-            <td><input type="submit" value="Lisää ruoka"></td>
+            <td>
+                    <button type="submit" class="btn btn-outline-primary">Lisää ruoka</button>
+            </td>
         </tr>
     </table>
 </form>

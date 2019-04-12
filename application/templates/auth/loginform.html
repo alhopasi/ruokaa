@@ -2,35 +2,31 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('auth_login') }}">
-        <div class="row">
-            <div class="col">
-            </div>
-            <div class="col">
-                {{ error }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
+    <table class="table">
+        {% if error %}
+        <tr>
+            <td></td>
+            <td>{{ error }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td>
                 <label>{{ form.username.label }}</label>
-            </div>
-            <div class="col">
-                {{ form.username }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            </td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>
                 <label>{{ form.password.label }}</label>
-            </div>
-            <div class="col">
-                {{ form.password }} 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col"></div>
-            <div class="col">
+            </td>
+            <td>{{ form.password }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
                 <button type="submit" class="btn btn-outline-primary">Kirjaudu</button>
-            </div>
-        </div>
-        </div>
+            </td>
+        </tr>
+    </table>
 </form>
 {% endblock %}

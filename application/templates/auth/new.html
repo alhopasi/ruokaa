@@ -3,7 +3,7 @@
 {% block body %}
 <h2>Luo uusi käyttäjä</h2>
 <form method="POST" action="{{ url_for('account_create') }}">
-    <table>
+    <table class="table">
         <tr>
             <td> {{ newAccountForm.name.label }}:</td>
             <td> {{ newAccountForm.name }} </td>
@@ -39,7 +39,9 @@
         </tr>
         <tr>
             <td />
-            <td><input type="submit" value="Rekisteröidy"></td>
+            <td>
+                <button type="submit" class="btn btn-outline-primary">Rekisteröidy</button>
+            </td>
         </tr>
     </table>
 </form>

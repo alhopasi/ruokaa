@@ -6,7 +6,7 @@
         <h2>Ruokaa ei löytynyt</h2>
     {% else %}
         {% if current_user == user %} 
-        <table>
+        <table class="table">
             <form method="POST" action="{{ url_for('foods_update', food_id = food.id) }}">
                 <tr>
                     <td> {{ newFoodForm.name.label }}:</td>
@@ -90,24 +90,25 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Talleta" /></td>
+                    <td>
+                        <button type="submit" class="btn btn-outline-primary">Talleta</button>
+                    </td>
                 </tr>
             </form>
             <form action="{{ url_for('food_view', food_id = food.id) }}">
                 <tr>
                     <td></td>
                     <td>
-                        <input type="submit" value="Peruuta" />
+                        <button type="submit" class="btn btn-outline-primary">Peruuta</button>
                     </td>            
                 </tr>
                 
             </form>
-            <tr><td><br></td></tr>
             <tr>
                 <td></td>
                 <td>
                     <form action="{{ url_for('foods_delete', food_id = food.id) }}">
-                        <input type="submit" onclick="return confirm('Poistetaanko ruoka?')" value="Poista ruoka" />
+                        <button type="submit" class="btn btn-outline-primary">Poista ruoka</button>
                     </form>
                 </td>
             </tr>
