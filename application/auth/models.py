@@ -33,6 +33,9 @@ class User(Base):
         self.role_id = r.id
         db.session().commit()
 
+    def get_role(self):
+        return Role.get_role(self.role_id)
+    
 class Role(Base):
     __tablename__ = "role"
 
@@ -43,6 +46,11 @@ class Role(Base):
     
     def get_id(self):
         return self.id
+
+    @staticmethod
+    def get_role(role_id):
+        r = Role.query.filter_by(id=role_id).first()
+        return r.name
 
     @staticmethod
     def findRole(name):

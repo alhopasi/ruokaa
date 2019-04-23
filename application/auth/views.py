@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 
 from application import app, db
-from application.foods.models import Food
+from application.foods.models import Food, Like
 from application.auth.models import User
 from application.auth.forms import LoginForm, NewAccountForm, UpdateAccountForm
 
@@ -65,33 +65,39 @@ def account_create():
 @login_required
 def auth_view_user():
     u = current_user
-
     pwd = "*" * len(u.password)
+    return render_template("auth/profile.html", user = u, pwd = pwd)
 
+@app.route("/profile/edit/", methods=["GET"])
+@login_required
+def auth_edit_user():
+    u = current_user
     form = UpdateAccountForm(request.form)
 
-    return render_template("auth/profile.html", user = u, accountForm = form, pwd = pwd)
+    form.name.data = u.name
+    form.username.data = u.username
 
-@app.route("/profile/", methods=["POST"])
+    return render_template("auth/update.html", accountForm = form)
+
+@app.route("/profile/edit/", methods=["POST"])
 @login_required
 def account_update():
     u = User.query.get(current_user.id)
 
     f = UpdateAccountForm(request.form)
-    pwd = "*" * len(u.password)
 
     if not f.validate():
-        return render_template("auth/profile.html", accountForm = f, user = u, pwd = pwd)
+        return render_template("auth/update.html", accountForm = f)
 
-
-    if (f.name.data):
-        u.name = f.name.data
-    if (f.username.data):
-        oldUser = User.query.filter_by(username=f.username.data).first()
-        if oldUser:
-            f.username.errors.append("käyttäjätunnus on jo olemassa")
-            return render_template("auth/profile.html", accountForm = f, user = u, pwd = pwd)
-        u.username = f.username.data
+    u.name = f.name.data
+    
+    oldUser = User.query.filter_by(username=f.username.data).first()
+    if oldUser and (not oldUser.username == u.username):
+        f.username.errors.append("käyttäjätunnus on jo olemassa")
+        return render_template("auth/update.html", accountForm = f)
+    
+    u.username = f.username.data
+    
     if (f.password.data):
         u.password = f.password.data
 
@@ -102,7 +108,14 @@ def account_update():
 @app.route("/profile/delete")
 @login_required
 def delete_user():
+    foods = Food.getUsersFoods(account_id=current_user.id)
+    for food in foods:
+        Food.delete_food(food_id=food.get('food_id'), user_id=current_user.id)
+    
+    Like.query.filter_by(account_id = current_user.id).delete()
+
     User.query.filter(User.id == current_user.id).delete()
+
     db.session().commit()
     
     logout_user()

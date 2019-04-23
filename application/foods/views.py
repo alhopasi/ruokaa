@@ -5,7 +5,6 @@ from application import app, db
 from application.foods.models import Food, Ingredient, Like
 from application.foods.forms import NewFoodForm
 
-
 @app.route("/foods/", methods=["GET"])
 def foods_index():
     foods = Food.query.all()
@@ -21,7 +20,10 @@ def food_view(food_id):
 
     i = f.findIngredients()
     u = f.getUser()
-    return render_template("foods/food.html", food = f, ingredients = i, user = u)
+    r = 'none'
+    if current_user.is_authenticated:
+        r = current_user.get_role()
+    return render_template("foods/food.html", food = f, ingredients = i, user = u, role = r)
 
 @app.route("/foods/edit/<food_id>/", methods=["GET"])
 def food_edit(food_id):
@@ -37,6 +39,10 @@ def food_edit(food_id):
     i = f.findIngredients()
     u = f.getUser()
 
+    r = 'none'
+    if current_user.is_authenticated:
+        r = current_user.get_role()
+
     form.name.data = f.name
     form.recipe.data = f.recipe
     ingredients_size = len(i)
@@ -49,7 +55,7 @@ def food_edit(food_id):
         form.ingredient4.data = i[3].get("name")
     
 
-    return render_template("foods/update.html", food = f, ingredients = i, user = u, newFoodForm = form)
+    return render_template("foods/update.html", food = f, ingredients = i, user = u, newFoodForm = form, role = r)
 
 @app.route("/foods/new/")
 @login_required
@@ -92,7 +98,7 @@ def foods_create():
 def foods_update(food_id):
     f = Food.query.get(food_id)
     
-    if not f.account_id == current_user.id:
+    if not (f.account_id == current_user.id or current_user.get_role() == 'admin'):
         return redirect(url_for("food_edit", food_id=f.id))
 
     i = f.findIngredients()
@@ -139,16 +145,13 @@ def foods_delete_ingredient(food_id, ingredient_id):
 @app.route("/foods/delete/<food_id>")
 @login_required
 def foods_delete(food_id):
+
     f = Food.query.get(food_id)
 
-    if not f.account_id == current_user.id:
+    if not (f.account_id == current_user.id or current_user.get_role() == 'admin'):
         return redirect(url_for("foods_index"))
 
-    i = f.findIngredients()
-    for ingredient in i:
-        f.deleteIngredient(ingredient['id'])
-    Food.query.filter(Food.id == food_id).delete()
-    db.session().commit()
+    Food.delete_food(food_id=food_id)
 
     return redirect(url_for("foods_index"))
 

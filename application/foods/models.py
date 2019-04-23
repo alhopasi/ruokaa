@@ -49,13 +49,29 @@ class Food(Base):
         stmt = text("DELETE FROM Ingredients"
                    " WHERE Ingredients.ingredient_id = :ingredient_id"
                    " AND Ingredients.food_id = :self_id").params(ingredient_id=ingredient_id, self_id=self.id)
-
         db.engine.execute(stmt)
 
     def addIngredient(self, ingredient_id):
         stmt = text("INSERT INTO Ingredients (food_id, ingredient_id)"
                     "VALUES (:food_id, :ingredient_id)").params(food_id=self.id, ingredient_id=ingredient_id)
         db.engine.execute(stmt)
+
+    @staticmethod
+    def delete_food(food_id):
+        f = Food.query.get(food_id)
+        i = f.findIngredients()
+        for ingredient in i:
+            f.deleteIngredient(ingredient['id'])
+            
+            amount = Ingredient.findIngredientCount(ingredient['id'])
+            if amount == 0:
+                Ingredient.query.filter_by(id=ingredient['id']).delete()
+    
+        Like.query.filter_by(food_id=f.id).delete()
+
+        Food.query.filter(Food.id == food_id).delete()
+
+        db.session().commit()
 
     @staticmethod
     def getFoodCount():
@@ -65,6 +81,17 @@ class Food(Base):
         response = []
         for row in res:
             response.append({"id":row[0], "foods":row[1]})
+        
+        return response
+
+    @staticmethod
+    def getUsersFoods(account_id):
+        stmt = text("SELECT Food.id FROM Food"
+                    " WHERE Food.account_id = :account_id").params(account_id = account_id)
+        res = db.engine.execute(stmt)
+        response = []
+        for row in res:
+            response.append({"food_id":row[0]})
         
         return response
 
@@ -110,6 +137,20 @@ class Ingredient(Base):
     def getId(self):
         return self.id
 
+    @staticmethod
+    def findIngredientCount(ingredient_id):
+        if not ingredient_id:
+            return
+        
+        stmt = text("SELECT COUNT(*) FROM Ingredients"
+                    " WHERE ingredient_id = :ingredient_id").params(ingredient_id=ingredient_id)
+        res = db.engine.execute(stmt)
+        
+        response = []
+        for row in res:
+            response.append({"amount":row[0]})
+        return response[0].get('amount')
+
 class Like(Base):
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
     food_id = db.Column(db.Integer, db.ForeignKey('food.id'), nullable=False)
@@ -119,4 +160,3 @@ class Like(Base):
         self.value = value
         self.food_id = food_id
         self.account_id = account_id
-    

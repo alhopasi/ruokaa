@@ -8,7 +8,7 @@
         <table>
             <tr>
                 <td><h2>{{ food.name }}</h2></td>
-                {% if current_user == user %} 
+                {% if current_user == user or role == 'admin' %} 
                 <td>
                     <form action="{{ url_for('food_edit', food_id = food.id) }}">
                         <input type="submit" value="Muokkaa" />
