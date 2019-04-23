@@ -36,7 +36,6 @@ def food_edit(food_id):
     form.duration.default = f.preparing_time
     form.process()
     
-    i = f.findIngredients()
     u = f.getUser()
 
     r = 'none'
@@ -45,23 +44,19 @@ def food_edit(food_id):
 
     form.name.data = f.name
     form.recipe.data = f.recipe
-    ingredients_size = len(i)
-    form.ingredient1.data = i[0].get("name")
-    if ingredients_size >= 2:
-        form.ingredient2.data = i[1].get("name")
-    if ingredients_size >= 3:
-        form.ingredient3.data = i[2].get("name")
-    if ingredients_size >= 4:
-        form.ingredient4.data = i[3].get("name")
-    
 
-    return render_template("foods/update.html", food = f, ingredients = i, user = u, newFoodForm = form, role = r)
+    form.ingredients.clear()
+    for ingredient in f.findIngredients():
+        form.ingredients.append(ingredient.get('name'))
+
+    return render_template("foods/update.html", food = f, ingredients = form.ingredients, user = u, newFoodForm = form, role = r)
 
 @app.route("/foods/new/")
 @login_required
 def foods_form():
-    return render_template("foods/new.html", newFoodForm = NewFoodForm())
-
+    newFoodForm = NewFoodForm()
+    newFoodForm.ingredients.clear()
+    return render_template("foods/new.html", newFoodForm = newFoodForm)
 
 @app.route("/foods/", methods=["POST"])
 @login_required
@@ -69,24 +64,32 @@ def foods_create():
 
     form = NewFoodForm(request.form)
 
-    if not form.validate():
-        return render_template("foods/new.html", newFoodForm = form)
+    if request.form.get('remove_ingredient_button'):
+        ingredient = request.form.get('remove_ingredient_button')
+        form.ingredients.remove(ingredient)
+        return render_template("foods/new.html", newFoodForm = form, ingredients=form.ingredients)
+
+    form.ingredient.errors = []
+    if request.form.get('add_ingredient_button') == '':
+        if len(form.ingredient.data) < 3 or len(form.ingredient.data) > 20:
+            form.ingredient.errors.append("Raaka-aineen tulee olla 3-20 kirjainta")
+        elif form.ingredient.data in form.ingredients:
+            form.ingredient.errors.append("Raaka-aine on jo lisätty")
+        else:            
+            form.ingredients.append(form.ingredient.data)
+        form.ingredient.data = ''
+        return render_template("foods/new.html", newFoodForm = form, ingredients=form.ingredients)
+
+    if not form.validate() or not form.ingredients:
+        if not form.ingredients:
+            form.ingredient.errors.append("Ruoalla tulle olla vähintään yksi raaka-aine")
+        return render_template("foods/new.html", newFoodForm = form, ingredients=form.ingredients)
 
     f = Food(form.name.data, form.duration.data, form.recipe.data, current_user.id)
 
-    # tarkista, että löytyykö jo ruoka-aineet, jos ei, luo uudet. tee monesta-moneen suhteet.
-    i1 = Ingredient.findIngredient(form.ingredient1.data)
-    i2 = Ingredient.findIngredient(form.ingredient2.data)
-    i3 = Ingredient.findIngredient(form.ingredient3.data)
-    i4 = Ingredient.findIngredient(form.ingredient4.data)
-
-    f.ingredients.append(i1)
-    if i2 and not (i2 == i1):
-        f.ingredients.append(i2)
-    if i3 and not (i3 == (i2 or i1)):
-        f.ingredients.append(i3)
-    if i4 and not (i4 == (i3 or i2 or i1)):
-        f.ingredients.append(i4)
+    for ingredient in form.ingredients:
+        i = Ingredient.findIngredient(ingredient)
+        f.ingredients.append(i)
 
     db.session().add(f)
     db.session().commit()
@@ -101,30 +104,39 @@ def foods_update(food_id):
     if not (f.account_id == current_user.id or current_user.get_role() == 'admin'):
         return redirect(url_for("food_edit", food_id=f.id))
 
-    i = f.findIngredients()
     u = f.getUser()
     form = NewFoodForm(request.form)
-    
-    if not form.validate():
-        return render_template("foods/update.html", food=f, ingredients=i, user=u, newFoodForm=form)
+
+    if request.form.get('remove_ingredient_button'):
+        ingredient = request.form.get('remove_ingredient_button')
+        form.ingredients.remove(ingredient)
+        return render_template("foods/update.html", food=f, ingredients=form.ingredients, user=u, newFoodForm=form)
+
+    form.ingredient.errors = []
+    if request.form.get('add_ingredient_button') == '':
+        if len(form.ingredient.data) < 3 or len(form.ingredient.data) > 20:
+            form.ingredient.errors.append("Raaka-aineen tulee olla 3-20 kirjainta")
+        elif form.ingredient.data in form.ingredients:
+            form.ingredient.errors.append("Raaka-aine on jo lisätty")
+        else:
+            form.ingredients.append(form.ingredient.data)
+        form.ingredient.data = ''
+        return render_template("foods/update.html", food=f, ingredients=form.ingredients, user=u, newFoodForm=form)
+
+    if not form.validate() or not form.ingredients:
+        if not form.ingredients:
+            form.ingredient.errors.append("Ruoalla tulle olla vähintään yksi raaka-aine")
+        return render_template("foods/update.html", food=f, ingredients=form.ingredients, user=u, newFoodForm=form)
+
 
     f.name = form.name.data
     f.preparing_time = form.duration.data
     f.recipe = form.recipe.data
-    
-    i1 = Ingredient.findIngredient(form.ingredient1.data)
-    i2 = Ingredient.findIngredient(form.ingredient2.data)
-    i3 = Ingredient.findIngredient(form.ingredient3.data)
-    i4 = Ingredient.findIngredient(form.ingredient4.data)
-    
-    f.ingredients = []
-    f.ingredients.append(i1)
-    if i2 and not (i2 == i1):
-        f.ingredients.append(i2)
-    if i3 and not (i3 == (i2 or i1)):
-        f.ingredients.append(i3)
-    if i4 and not (i4 == (i3 or i2 or i1)):
-        f.ingredients.append(i4)
+
+    f.ingredients.clear()
+    for ingredient in form.ingredients:
+        i = Ingredient.findIngredient(ingredient)
+        f.ingredients.append(i)
 
     db.session().commit()
 

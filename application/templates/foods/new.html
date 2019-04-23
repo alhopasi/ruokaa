@@ -1,87 +1,53 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('foods_create')}}">
+<form method="POST" action="{{ url_for('foods_create') }}">
     <table class="table">
+        <h2>Lisää uusi</h2>
+        {% if newFoodForm.name.errors or newFoodForm.duration.errors or newFoodForm.ingredient.errors or newFoodForm.recipe.errors %}
         <tr>
-            <td> {{ newFoodForm.name.label }}:</td>
-            <td> {{ newFoodForm.name }} </td>
+            <td />
             <td>
                 <ul>
                     {% for error in newFoodForm.name.errors %}
                     <li>{{ error }} </li>
                     {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td> {{ newFoodForm.duration.label }}:</td>
-            <td> {{ newFoodForm.duration }} </td>
-            <td>
-                <ul>
                     {% for error in newFoodForm.duration.errors %}
-                    <li></li>{{ error }} </li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td /><td>Pääraaka-aineet:</td>
-        </tr>
-        <tr>
-            <td> {{ newFoodForm.ingredient1.label }}:</td>
-            <td> {{ newFoodForm.ingredient1 }}</td>
-            <td>
-                <ul>
-                    {% for error in newFoodForm.ingredient1.errors %}
                     <li>{{ error }} </li>
                     {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td> {{ newFoodForm.ingredient2.label }}:</td>
-            <td> {{ newFoodForm.ingredient2 }}</td>
-            <td>
-                <ul>
-                    {% for error in newFoodForm.ingredient2.errors %}
+                    {% for error in newFoodForm.ingredient.errors %}
                     <li>{{ error }} </li>
                     {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td> {{ newFoodForm.ingredient3.label }}:</td>
-            <td> {{ newFoodForm.ingredient3 }}</td>
-            <td>
-                <ul>
-                    {% for error in newFoodForm.ingredient3.errors %}
-                    <li>{{ error }} </li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td> {{ newFoodForm.ingredient4.label }}:</td>
-            <td> {{ newFoodForm.ingredient4 }}</td>
-            <td>
-                <ul>
-                    {% for error in newFoodForm.ingredient4.errors %}
-                    <li>{{ error }} </li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td> {{ newFoodForm.recipe.label }}:</td>
-            <td> {{ newFoodForm.recipe(rows="10", cols="30") }} </td>
-            <td>
-                <ul>
                     {% for error in newFoodForm.recipe.errors %}
                     <li>{{ error }} </li>
                     {% endfor %}
                 </ul>
             </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td> {{ newFoodForm.name.label }}:</td>
+            <td> {{ newFoodForm.name }} </td>
+        </tr>
+        <tr>
+            <td> {{ newFoodForm.duration.label }}:</td>
+            <td> {{ newFoodForm.duration }} </td>
+        </tr>
+        <tr>
+            <td />
+            <td>
+                Raaka-aineet:
+                {% for ingredient in ingredients %}
+                <br>{{ ingredient }} <button type="submit" name="remove_ingredient_button"
+                class="btn btn-secondary btn-sm" value= {{ ingredient }}>Poista</button>
+                {% endfor %}
+                <br> {{ newFoodForm.ingredient }} <button type="submit" name="add_ingredient_button"
+                    class="btn btn-primary btn-sm">Lisää raaka-aine</button>
+            </td>
+        </tr>
+        <tr>
+            <td> {{ newFoodForm.recipe.label }}:</td>
+            <td> {{ newFoodForm.recipe(rows="10", cols="30") }} </td>
         </tr>
         <tr>
             <td />
