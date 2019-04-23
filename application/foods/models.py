@@ -66,6 +66,8 @@ class Food(Base):
             amount = Ingredient.findIngredientCount(ingredient['id'])
             if amount == 0:
                 Ingredient.query.filter_by(id=ingredient['id']).delete()
+            
+            db.session().commit()
     
         Like.query.filter_by(food_id=f.id).delete()
 
