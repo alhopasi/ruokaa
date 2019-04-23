@@ -110,7 +110,7 @@ def account_update():
 def delete_user():
     foods = Food.getUsersFoods(account_id=current_user.id)
     for food in foods:
-        Food.delete_food(food_id=food.get('food_id'), user_id=current_user.id)
+        Food.delete_food(food_id=food.get('food_id'))
     
     Like.query.filter_by(account_id = current_user.id).delete()
 
