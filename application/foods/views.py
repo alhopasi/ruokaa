@@ -3,7 +3,8 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.foods.models import Food, Ingredient, Like, Type
-from application.foods.forms import NewFoodForm
+from application.foods.forms import NewFoodForm, MenuForm
+import random
 
 @app.route("/foods/", methods=["GET"])
 def foods_index():
@@ -30,6 +31,7 @@ def food_view(food_id):
     return render_template("foods/food.html", food = f, ingredients = i, user = u, role = r, type = t)
 
 @app.route("/foods/edit/<food_id>/", methods=["GET"])
+@login_required
 def food_edit(food_id):
 
     f = Food.query.get(food_id)
@@ -56,6 +58,27 @@ def food_edit(food_id):
         form.ingredients.append(ingredient.get('name'))
 
     return render_template("foods/update.html", food = f, ingredients = form.ingredients, user = u, newFoodForm = form, role = r)
+
+@app.route("/foods/menu/", methods=["GET"])
+def foods_menu():
+    return render_template("foods/menu.html", menuForm = MenuForm())
+
+@app.route("/foods/menu/", methods=["POST"])
+def foods_menu_create():
+    form = MenuForm(request.form)
+    foods = None
+    if form.food_type.data == 'Kaikki':
+        foods = Food.query.all()
+    else:
+        food_type = Type.query.filter_by(name=form.food_type.data).first()
+        if not food_type == None:
+            foods = Food.query.filter_by(type_id=food_type.id).all()
+    random.shuffle(foods)
+    for f in foods:
+        f.likes = f.countLikes()
+        if f.likes < -4:
+            foods.remove(f)
+    return render_template("foods/menu.html", menuForm = form, foods=foods)
 
 @app.route("/foods/new/")
 @login_required

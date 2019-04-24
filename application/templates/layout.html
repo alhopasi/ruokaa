@@ -23,6 +23,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('list_users') }} ">Käyttäjät</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('foods_menu') }} ">Arvo ruokalista</a>
+                    </li>
                 </ul>
             <div class="form-inline mt-2 mt-md-0"></div>
             {% if current_user.is_authenticated %}
