@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from application import app, db
 from application.foods.models import Food, Ingredient, Like, Type
-from application.foods.forms import NewFoodForm, MenuForm
+from application.foods.forms import NewFoodForm, MenuForm, FindField
 import random
 
 @app.route("/foods/", methods=["GET"])
@@ -12,8 +12,16 @@ def foods_index():
     for f in foods:
         f.likes = f.countLikes()
     foods.sort(key = lambda f: f.likes, reverse = True)
-    return render_template("foods/list.html", foods=foods)
+    return render_template("foods/list.html", foods=foods, findField = FindField())
 
+@app.route("/foods/", methods=["POST"])
+def foods_index_filter():
+    form = FindField(request.form)
+    foods = Food.query.filter(Food.name.like('%'+form.name.data+'%')).all()
+    for f in foods:
+        f.likes = f.countLikes()
+    foods.sort(key = lambda f: f.likes, reverse = True)
+    return render_template("foods/list.html", foods=foods, findField = form)
 
 @app.route("/foods/<food_id>/", methods=["GET"])
 def food_view(food_id):

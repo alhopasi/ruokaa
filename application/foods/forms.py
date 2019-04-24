@@ -19,3 +19,9 @@ class MenuForm(FlaskForm):
     
     class Meta:
         csrf = False
+
+class FindField(FlaskForm):
+    name = StringField("Ruoka")
+
+    class Meta:
+        csrf = False

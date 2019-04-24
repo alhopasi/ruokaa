@@ -9,7 +9,7 @@
 
 Voit luoda oman käyttäjän tai kokeilla testikäyttäjällä:
 
-käyttäjätunnus ja salasana: *admin*, *admin*
+käyttäjätunnus ja salasana: *admin*, *admin* tai *testi*, *testi*
 
 **Kuvaus:**
 Ruokaa -sovellukseen rekisteröityneet käyttäjät voivat tallentaa ruokia. Ruoka koostuu raaka-aineista, valmistusajasta, sekä ohjeesta. Käyttäjät voivat selata ja etsiä ruokia, antaa niille tykkäyksiä sekä kommentoida niitä.
