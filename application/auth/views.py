@@ -126,4 +126,13 @@ def delete_user():
 @login_required
 def list_users():
     foodCount = Food.getFoodCount()
-    return render_template("auth/list.html", users=User.query.all(), foodCount = foodCount)
+    users = User.query.all()
+    for user in users:
+        user.food_count = 0
+        for foodC in foodCount:
+            if foodC.get('id') == user.id:
+                user.food_count = foodC.get('foods')
+                continue
+                
+    users.sort(key = lambda u: u.food_count, reverse = True)
+    return render_template("auth/list.html", users=users)

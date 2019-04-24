@@ -12,13 +12,7 @@
         {% for user in users %}
         <tr>
             <td>{{ user.name }}</td>
-            <td>
-                {% for foodC in foodCount %}
-                    {% if foodC.id == user.id %}
-                        {{ foodC.foods }}
-                    {% endif %}
-                {% endfor %}
-            </td>
+            <td>{{ user.food_count }}</td>
         </tr>
         {% endfor %}
     </tbody>
