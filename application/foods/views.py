@@ -2,13 +2,16 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 
 from application import app, db
-from application.foods.models import Food, Ingredient, Like
+from application.foods.models import Food, Ingredient, Like, Type
 from application.foods.forms import NewFoodForm
 
 @app.route("/foods/", methods=["GET"])
 def foods_index():
     foods = Food.query.all()
-    return render_template("foods/list.html", foods=Food.query.all())
+    for f in foods:
+        f.likes = f.countLikes()
+    foods.sort(key = lambda f: f.likes, reverse = True)
+    return render_template("foods/list.html", foods=foods)
 
 
 @app.route("/foods/<food_id>/", methods=["GET"])
@@ -21,9 +24,10 @@ def food_view(food_id):
     i = f.findIngredients()
     u = f.getUser()
     r = 'none'
+    t = Type.query.get(f.type_id).name
     if current_user.is_authenticated:
         r = current_user.get_role()
-    return render_template("foods/food.html", food = f, ingredients = i, user = u, role = r)
+    return render_template("foods/food.html", food = f, ingredients = i, user = u, role = r, type = t)
 
 @app.route("/foods/edit/<food_id>/", methods=["GET"])
 def food_edit(food_id):
@@ -34,6 +38,8 @@ def food_edit(food_id):
 
     form = NewFoodForm()
     form.duration.default = f.preparing_time
+    food_type = Type.query.get(f.type_id)
+    form.food_type.default = food_type.name
     form.process()
     
     u = f.getUser()
@@ -85,7 +91,9 @@ def foods_create():
             form.ingredient.errors.append("Ruoalla tulle olla vähintään yksi raaka-aine")
         return render_template("foods/new.html", newFoodForm = form, ingredients=form.ingredients)
 
-    f = Food(form.name.data, form.duration.data, form.recipe.data, current_user.id)
+    type_id = Type.find_type(form.food_type.data)
+
+    f = Food(form.name.data, form.duration.data, form.recipe.data, current_user.id, type_id)
 
     for ingredient in form.ingredients:
         i = Ingredient.findIngredient(ingredient)
@@ -132,6 +140,8 @@ def foods_update(food_id):
     f.name = form.name.data
     f.preparing_time = form.duration.data
     f.recipe = form.recipe.data
+
+    f.type_id = Type.find_type(form.food_type.data)
 
     f.ingredients.clear()
     for ingredient in form.ingredients:

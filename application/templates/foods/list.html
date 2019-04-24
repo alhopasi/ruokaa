@@ -7,6 +7,7 @@
         <tr>
         <th scope="col">Ruoka</th>
         <th scope="col">Tykkäyksiä</th>
+        <th scope="col">Tyyppi</th>
         <th scope="col">Valmistusaika</th>
         </tr>
     </thead>
@@ -18,7 +19,10 @@
                 {{ food.name }}</a></td>
             </td>
             <td>
-                {{ food.countLikes() }}
+                {{ food.likes }}
+            </td>
+            <td>
+                {{ food.get_name() }}
             </td>
             <td>
                 {{ food.preparing_time }}

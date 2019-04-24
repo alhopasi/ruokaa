@@ -35,6 +35,10 @@
             <td> {{ newFoodForm.name }} </td>
         </tr>
         <tr>
+            <td> {{ newFoodForm.food_type.label }}:</td>
+            <td> {{ newFoodForm.food_type }} </td>
+        </tr>
+        <tr>
             <td> {{ newFoodForm.duration.label }}:</td>
             <td> {{ newFoodForm.duration }} </td>
         </tr>
@@ -44,7 +48,7 @@
                 Raaka-aineet:
                 {% for ingredient in ingredients %}
                 <br>{{ ingredient }} <button type="submit" name="remove_ingredient_button"
-                class="btn btn-secondary btn-sm" value= {{ ingredient }}>Poista</button>
+                    class="btn btn-secondary btn-sm" value={{ ingredient }}>Poista</button>
                 {% endfor %}
                 <br> {{ newFoodForm.ingredient }} <button type="submit" name="add_ingredient_button"
                     class="btn btn-primary">Lisää raaka-aine</button>

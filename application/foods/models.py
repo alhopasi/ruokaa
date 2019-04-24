@@ -14,16 +14,18 @@ class Food(Base):
     name = db.Column(db.String(144), nullable=False)
     preparing_time = db.Column(db.Integer, nullable=False)
     recipe = db.Column(db.String(5000), nullable=False)
-
+    
+    type_id = db.Column(db.Integer, db.ForeignKey('type.id'), nullable=False)
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
     ingredients = db.relationship('Ingredient', secondary=ingredients, lazy='subquery',
         backref=db.backref('foods', lazy=True))
 
-    def __init__(self, name, preparing_time, recipe, account_id):
+    def __init__(self, name, preparing_time, recipe, account_id, type_id):
         self.name = name
         self.preparing_time = preparing_time
         self.recipe = recipe
         self.account_id = account_id
+        self.type_id = type_id
     
     def getId(self):
         return self.id
@@ -114,6 +116,9 @@ class Food(Base):
             elif l.value == -1:
                 value = "Oma tykkäys: -1"
         return value
+
+    def get_name(self):
+        return Type.query.get(self.type_id).name
     
 class Ingredient(Base):
     name = db.Column(db.String(20), nullable=False)
@@ -162,3 +167,20 @@ class Like(Base):
         self.value = value
         self.food_id = food_id
         self.account_id = account_id
+
+class Type(Base):
+    name = db.Column(db.String(20), nullable=False)
+
+    def __init__(self, name):
+        self.name = name
+
+    @staticmethod
+    def find_type(name):
+        type_id = Type.query.filter_by(name=name).first()
+        if not type_id:
+            food_type = Type(name)
+            db.session.add(food_type)
+            db.session.commit()
+
+            return food_type.id
+        return type_id.id
