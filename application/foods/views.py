@@ -88,14 +88,14 @@ def foods_menu_create():
             foods.remove(f)
     return render_template("foods/menu.html", menuForm = form, foods=foods)
 
-@app.route("/foods/new/")
+@app.route("/foods/new/", methods=["GET"])
 @login_required
 def foods_form():
     newFoodForm = NewFoodForm()
     newFoodForm.ingredients.clear()
     return render_template("foods/new.html", newFoodForm = newFoodForm)
 
-@app.route("/foods/", methods=["POST"])
+@app.route("/foods/new/", methods=["POST"])
 @login_required
 def foods_create():
 
