@@ -7,6 +7,7 @@
 - Admin roolille mahdollisuus toisten käyttäjien poistoon ja muokkaukseen.
 - Kommentoinnin lisäys ruokiin. Käyttäjä voi kirjoittaa jokaiselle ruoalle yhden kommentin, muokata sitä tai poistaa sen.
 - Profiilisivulle lista omista ruoista.
+- Salasanan hashaus esim. Flask-Bcryptillä
 
 **Mahdollisia kehitysehdotuksia**
 - Ruokaan tarkempi ohje. Esim. ruoka-aineiden määrät.
