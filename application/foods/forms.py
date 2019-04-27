@@ -9,7 +9,7 @@ class NewFoodForm(FlaskForm):
     food_type = SelectField("Tyyppi", choices= [('Kala','Kala'),('Kana','Kana'),('Kasvis','Kasvis'),('Nauta','Nauta'),('Porsas','Porsas'),('Riista','Riista')], validators = [validators.DataRequired('Valitse tyyppi')])
     ingredients = []
     
-    ingredient = StringField("Raaka-aine")
+    ingredient = StringField("Aines")
 
     class Meta:
         csrf = False

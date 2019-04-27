@@ -1,15 +1,17 @@
 {% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
 
 {% block body %}
 <form method="POST" action="{{ url_for('foods_index_filter') }}">
-    <table class="table">
-        <tr>
-            <td>
-                {{ findField.name.label }}: {{ findField.name }}
-                <button type="submit" class="btn btn-outline-primary">Etsi</button></td>
-            </td>
-        </tr>
-    </table>
+    <div class="form-group row col-auto">
+        <label class="col-auto col-form-label">{{ findField.name.label }}:</label>
+        <div class="col-auto">
+            {{ render_field(findField.name, class="form-control") }}
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Etsi</button>
+        </div>
+    </div>
 </form>
 
 <table class="table table-striped">

@@ -1,58 +1,49 @@
 {% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
 
 {% block body %}
+<h2>Arvo ruokalista</h2>
 <form method="POST" action="{{ url_for('foods_menu_create') }}">
-  <table class="table">
-    <h2>Arvo ruokalista</h2>
-    {% if menuForm.food_type.errors %}
-    <tr>
-      <td>
-        <ul>
-          {% for error in manuForm.food_type.errors %}
-          <li>{{ error }} </li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-    {% endif %}
-    <tr>
-      <td>
-        {{ menuForm.food_type.label }}: {{ menuForm.food_type }}   
-        <button type="submit" class="btn btn-outline-primary">Arvo</button></td>
-      </td>
-    </tr>
-  </table>
+  <div class="form-group row col-auto">
+    <label class="col-auto col-form-label">{{ menuForm.food_type.label }}:</label>
+    <div class="col-auto">
+      {{ render_field(menuForm.food_type, class="form-control") }}
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-outline-primary">Arvo</button>
+    </div>
+  </div>
 </form>
 {% if foods %}
 <table class="table table-striped">
-    <thead>
-        <tr>
-        <th scope="col">Ruoka</th>
-        <th scope="col">Tykkäyksiä</th>
-        <th scope="col">Tyyppi</th>
-        <th scope="col">Valmistusaika</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for food in foods %}
-        <tr>
-            <td>
-                <a href="{{ url_for('food_view', food_id=food.id) }}">
-                {{ food.name }}</a></td>
-            </td>
-            <td>
-                {{ food.likes }}
-            </td>
-            <td>
-                {{ food.get_name() }}
-            </td>
-            <td>
-                {{ food.preparing_time }}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-    </table>
+  <thead>
+    <tr>
+      <th scope="col">Ruoka</th>
+      <th scope="col">Tykkäyksiä</th>
+      <th scope="col">Tyyppi</th>
+      <th scope="col">Valmistusaika</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for food in foods %}
+    <tr>
+      <td>
+        <a href="{{ url_for('food_view', food_id=food.id) }}">
+          {{ food.name }}</a></td>
+      </td>
+      <td>
+        {{ food.likes }}
+      </td>
+      <td>
+        {{ food.get_name() }}
+      </td>
+      <td>
+        {{ food.preparing_time }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 <table>
-    {% endif %}
-{% endblock %}
+  {% endif %}
+  {% endblock %}
