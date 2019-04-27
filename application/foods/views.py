@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from application import app, db
 from application.foods.models import Food, Ingredient, Like, Type
 from application.foods.forms import NewFoodForm, MenuForm, FindField
+from sqlalchemy import func
 import random
 
 @app.route("/foods/", methods=["GET"])
@@ -17,7 +18,7 @@ def foods_index():
 @app.route("/foods/", methods=["POST"])
 def foods_index_filter():
     form = FindField(request.form)
-    foods = Food.query.filter(Food.name.like('%'+form.name.data+'%')).all()
+    foods = Food.query.filter(func.lower(Food.name).like('%'+func.lower(form.name.data)+'%')).all()
     for f in foods:
         f.likes = f.countLikes()
     foods.sort(key = lambda f: f.likes, reverse = True)
