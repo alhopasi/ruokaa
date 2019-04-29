@@ -85,12 +85,13 @@ def foods_menu_create():
         food_type = Type.query.filter_by(name=form.food_type.data).first()
         if food_type:
             foods = Food.query.filter_by(type_id=food_type.id).all()
-            random.shuffle(foods)
-            for f in foods:
-                f.likes = f.countLikes()
-                f.type = f.get_type_name()
-                if f.likes < -4:
-                    foods.remove(f)
+    if foods:
+        random.shuffle(foods)
+        for f in foods:
+            f.likes = f.countLikes()
+            f.type = f.get_type_name()
+            if f.likes < -4:
+                foods.remove(f)
     return render_template("foods/menu.html", menuForm = form, foods=foods)
 
 @app.route("/foods/new/", methods=["GET"])
