@@ -67,6 +67,10 @@ def auth_view_user():
     u = current_user
     pwd = "*" * len(u.password)
     f = Food.query.filter(Food.account_id == current_user.id).all()
+    for food in f:
+        food.likes = food.countLikes()
+        food.type = food.get_type_name()
+    f.sort(key = lambda f: f.likes, reverse = True)
     return render_template("auth/profile.html", user = u, pwd = pwd, foods = f)
 
 @app.route("/profile/edit/", methods=["GET"])

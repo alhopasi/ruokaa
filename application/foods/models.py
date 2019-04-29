@@ -117,7 +117,7 @@ class Food(Base):
                 value = "Oma tykkäys: -1"
         return value
 
-    def get_name(self):
+    def get_type_name(self):
         return Type.query.get(self.type_id).name
     
 class Ingredient(Base):

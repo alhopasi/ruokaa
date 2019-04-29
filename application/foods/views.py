@@ -12,6 +12,7 @@ def foods_index():
     foods = Food.query.all()
     for f in foods:
         f.likes = f.countLikes()
+        f.type = f.get_type_name()
     foods.sort(key = lambda f: f.likes, reverse = True)
     return render_template("foods/list.html", foods=foods, findField = FindField())
 
@@ -19,8 +20,10 @@ def foods_index():
 def foods_index_filter():
     form = FindField(request.form)
     foods = Food.query.filter(func.lower(Food.name).like('%'+func.lower(form.name.data)+'%')).all()
+
     for f in foods:
         f.likes = f.countLikes()
+        f.type = f.get_type_name()
     foods.sort(key = lambda f: f.likes, reverse = True)
     return render_template("foods/list.html", foods=foods, findField = form)
 
@@ -85,6 +88,7 @@ def foods_menu_create():
     random.shuffle(foods)
     for f in foods:
         f.likes = f.countLikes()
+        f.type = f.get_type_name()
         if f.likes < -4:
             foods.remove(f)
     return render_template("foods/menu.html", menuForm = form, foods=foods)
