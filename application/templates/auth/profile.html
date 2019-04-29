@@ -28,4 +28,38 @@
     </form>
   </div>
 </div>
+<h2>Ruoat</h2>
+<table class="table table-striped">
+  <thead>
+      <tr>
+          <th scope="col">Ruoka</th>
+          <th scope="col">Tykkäyksiä</th>
+          <th scope="col">Tyyppi</th>
+          <th scope="col">Valmistusaika</th>
+          <th scope="col">Luonut</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for food in foods %}
+      <tr>
+          <td>
+              <a href="{{ url_for('food_view', food_id=food.id) }}">
+                  {{ food.name }}</a></td>
+          </td>
+          <td>
+              {{ food.likes }}
+          </td>
+          <td>
+              {{ food.name }}
+          </td>
+          <td>
+              {{ food.preparing_time }}
+          </td>
+          <td>
+              {{ food.getUser().name }}
+          </td>
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

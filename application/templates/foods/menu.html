@@ -22,6 +22,7 @@
       <th scope="col">Tykkäyksiä</th>
       <th scope="col">Tyyppi</th>
       <th scope="col">Valmistusaika</th>
+      <th scope="col">Luonut</th>
     </tr>
   </thead>
   <tbody>
@@ -39,6 +40,9 @@
       </td>
       <td>
         {{ food.preparing_time }}
+      </td>
+      <td>
+        {{ food.getUser().name }}
       </td>
     </tr>
     {% endfor %}

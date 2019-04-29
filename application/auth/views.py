@@ -66,7 +66,8 @@ def account_create():
 def auth_view_user():
     u = current_user
     pwd = "*" * len(u.password)
-    return render_template("auth/profile.html", user = u, pwd = pwd)
+    f = Food.query.filter(Food.account_id == current_user.id).all()
+    return render_template("auth/profile.html", user = u, pwd = pwd, foods = f)
 
 @app.route("/profile/edit/", methods=["GET"])
 @login_required
