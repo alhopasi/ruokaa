@@ -30,6 +30,9 @@ def foods_index_filter():
 @app.route("/foods/<food_id>/", methods=["GET"])
 def food_view(food_id):
 
+    if int(food_id) > 2147483647:
+        return render_template("foods/food.html", food = None)
+
     f = Food.query.get(food_id)
     if not f:
         return render_template("foods/food.html", food = None)
@@ -46,7 +49,7 @@ def food_view(food_id):
 @login_required
 def food_edit(food_id):
 
-    if food_id > 2147483647:
+    if int(food_id) > 2147483647:
         return render_template("foods/update.html", food = None)
 
     f = Food.query.get(food_id)
