@@ -12,7 +12,6 @@ def auth_login():
         return render_template("auth/loginform.html", form = LoginForm())
     
     form = LoginForm(request.form)
-    # mahdolliset validoinnit
 
     user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
     if not user:
@@ -110,7 +109,7 @@ def account_update():
 
     return redirect(url_for("auth_view_user"))
 
-@app.route("/profile/delete")
+@app.route("/profile/delete", methods=["POST"])
 @login_required
 def delete_user():
     foods = Food.getUsersFoods(account_id=current_user.id)

@@ -7,19 +7,19 @@
 <form method="POST" action="{{ url_for('account_create') }}">
     <div class="form-group row col-auto">
         <label class="col-2 col-form-label">{{ newAccountForm.name.label }}</label>
-        <div class="col-3">
+        <div class="col-auto">
             {{ render_field(newAccountForm.name, class='form-control') }}
         </div>
     </div>
     <div class="form-group row col-auto">
         <label class="col-2 col-form-label">{{ newAccountForm.username.label }}</label>
-        <div class="col-3">
+        <div class="col-auto">
             {{ render_field(newAccountForm.username, class='form-control') }}
         </div>
     </div>
     <div class="form-group row col-auto">
         <label class="col-2 col-form-label">{{ newAccountForm.password.label }}</label>
-        <div class="col-3">
+        <div class="col-auto">
             {{ render_field(newAccountForm.password, class='form-control') }}
         </div>
     </div>

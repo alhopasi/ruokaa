@@ -5,25 +5,25 @@
 <h2>Lisää uusi</h2>
 <form method="POST" action="{{ url_for('foods_create') }}">
     <div class="form-group row col-auto">
-        <label class="col-1 col-form-label">{{ newFoodForm.name.label }}:</label>
+        <label class="col-1 col-form-label">{{ newFoodForm.name.label }}</label>
         <div class="col-3">
             {{ render_field(newFoodForm.name, class='form-control') }}
         </div>
     </div>
     <div class="form-group row col-auto">
-        <label class="col-1 col-form-label">{{ newFoodForm.food_type.label }}:</label>
+        <label class="col-1 col-form-label">{{ newFoodForm.food_type.label }}</label>
         <div class="col-3">
             {{ render_field(newFoodForm.food_type, class='form-control') }}
         </div>
     </div>
     <div class="form-group row col-auto">
-        <label class="col-1 col-form-label">{{ newFoodForm.duration.label }}:</label>
+        <label class="col-1 col-form-label">{{ newFoodForm.duration.label }}</label>
         <div class="col-3">
             {{ render_field(newFoodForm.duration, class='form-control') }}
         </div>
     </div>
     <div class="form-group row col-auto">
-        <label class="col-1 col-form-label">{{ newFoodForm.ingredient.label }}:</label>
+        <label class="col-1 col-form-label">{{ newFoodForm.ingredient.label }}</label>
         <div class="col-3">
             {{ render_field(newFoodForm.ingredient, class='form-control') }}
         </div>
@@ -42,7 +42,7 @@
     </div>
     {% endfor %}
     <div class="form-group row col-auto">
-        <label class="col-1 col-form-label">{{ newFoodForm.recipe.label }}:</label>
+        <label class="col-1 col-form-label">{{ newFoodForm.recipe.label }}</label>
         <div class="col-3">
             {{ render_field(newFoodForm.recipe, class='form-control', rows='10') }}
         </div>

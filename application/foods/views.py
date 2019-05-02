@@ -47,7 +47,7 @@ def food_view(food_id):
 def food_edit(food_id):
 
     f = Food.query.get(food_id)
-    if not f:
+    if not f or food_id > 2147483647:
         return render_template("foods/update.html", food = None)
 
     form = NewFoodForm()
@@ -201,7 +201,7 @@ def foods_delete_ingredient(food_id, ingredient_id):
     return redirect(url_for("food_edit", food_id=food_id))
 
 
-@app.route("/foods/delete/<food_id>")
+@app.route("/foods/delete/<food_id>", methods=["POST"])
 @login_required
 def foods_delete(food_id):
 
@@ -214,7 +214,7 @@ def foods_delete(food_id):
 
     return redirect(url_for("foods_index"))
 
-@app.route("/foods/like/<food_id>?<value>")
+@app.route("/foods/like/<food_id>?<value>", methods=["GET"])
 @login_required
 def foods_like(food_id, value):
     f = Food.query.get(food_id)

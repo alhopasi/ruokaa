@@ -7,6 +7,8 @@
 - Kopioi kaikki tiedostot johonkin kansioon.
 - Siirry kyseisen kansion juureen.
 - Asenna projektin riippuvuudet komennolla `pip install -r requirements.txt`
+- Asenna virtuaaliympäristö komennolla `python3 -m venv venv`
+- Käynnistä virtuaaliympäristö komennolla `source venv/bin/activate`
 - Käynnistä ohjelma komennolla `python run.py`
 - Avaa selaimella sivu: http://localhost:5000/
 

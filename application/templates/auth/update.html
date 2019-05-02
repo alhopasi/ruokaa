@@ -6,13 +6,13 @@
 <form method="POST" action="{{ url_for('account_update') }}">
   <div class="form-group row col-auto">
     <label class="col-2 col-form-label">{{ accountForm.name.label }}</label>
-    <div class="col-3">
+    <div class="col-auto">
       {{ render_field(accountForm.name, class='form-control') }}
     </div>
   </div>
   <div class="form-group row col-auto">
     <label class="col-2 col-form-label">{{ accountForm.username.label }}</label>
-    <div class="col-3">
+    <div class="col-auto">
       {{ render_field(accountForm.username, class='form-control') }}
     </div>
   </div>
@@ -20,7 +20,7 @@
     <label class="col-2 col-form-label">Uusi salasana
       <br><small class="form-text text-muted">Tyhjä säilyttää vanhan</small>
     </label>
-    <div class="col-3">
+    <div class="col-auto">
       {{ render_field(accountForm.password, class='form-control') }}
     </div>
   </div>
@@ -39,7 +39,7 @@
 <div class="form-group row col-auto">
   <div class="col-2"></div>
   <div class="col-auto">
-    <form action="{{ url_for('delete_user') }}">
+    <form method="POST" action="{{ url_for('delete_user') }}">
       <input type="submit" class="btn btn-outline-primary"
         onclick="return confirm('Poistetaanko tili?\nKaikki tietosi katoavat!')" value="Poista tili" />
     </form>
