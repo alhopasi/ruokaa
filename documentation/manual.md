@@ -44,8 +44,9 @@ Kirjautuneena käyttäjä voi katsoa ruokia, arpoa ruokalistan, lisätä uuden r
 
 **Profiili-sivu**:
 - Profiilisivulle pääsee painamalla omaa nimeä. Vain omaa profiilia voi tarkastella.
+- Sivulla näkee omat tiedot sekä omat ruoat.
 - Muokkaa nappia painamalla pääsee profiilin muokkaus-sivulle.
 
 **Profiilin muokkaus**:
 - Käyttäjä voi muuttaa tietojaan.
-- Salasanakentän jos jättää tyhjäksi, jää vanha salasana voimaan.
+- Jos salasanakentän jättää tyhjäksi, jää vanha salasana voimaan.

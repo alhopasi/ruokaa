@@ -6,6 +6,9 @@ from application.foods.models import Food, Like
 from application.auth.models import User
 from application.auth.forms import LoginForm, NewAccountForm, UpdateAccountForm
 
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt(app)
+
 @app.route("/auth/login", methods = ["GET", "POST"])
 def auth_login():
     if request.method == "GET":
@@ -13,8 +16,11 @@ def auth_login():
     
     form = LoginForm(request.form)
 
-    user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
+    user = User.query.filter_by(username=form.username.data).first()
     if not user:
+        return render_template("auth/loginform.html", form = form, error = "Käyttäjätunnusta tai salasanaa ei löydy")
+
+    if not bcrypt.check_password_hash(user.password, form.password.data):
         return render_template("auth/loginform.html", form = form, error = "Käyttäjätunnusta tai salasanaa ei löydy")
 
     login_user(user)
@@ -33,14 +39,15 @@ def account_new():
         return redirect(url_for("index"))
 
 
-@app.route("/auth/", methods=["POST"])
+@app.route("/auth/new/", methods=["POST"])
 def account_create():
     form = NewAccountForm(request.form)
 
     if not form.validate():
         return render_template("auth/new.html", newAccountForm = form)
 
-    u = User(form.name.data, form.username.data, form.password.data)
+    pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+    u = User(form.name.data, form.username.data, pw_hash)
 
     oldUser = User.query.filter_by(username=form.username.data).first()
     if oldUser:
@@ -55,7 +62,7 @@ def account_create():
     db.session().add(u)
     db.session().commit()
 
-    user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
+    user = User.query.filter_by(username=form.username.data).first()
     login_user(user)
 
     return redirect(url_for("index"))
@@ -64,13 +71,12 @@ def account_create():
 @login_required
 def auth_view_user():
     u = current_user
-    pwd = "*" * len(u.password)
     f = Food.query.filter(Food.account_id == current_user.id).all()
     for food in f:
         food.likes = food.countLikes()
         food.type = food.get_type_name()
     f.sort(key = lambda f: f.likes, reverse = True)
-    return render_template("auth/profile.html", user = u, pwd = pwd, foods = f)
+    return render_template("auth/profile.html", user = u, foods = f)
 
 @app.route("/profile/edit/", methods=["GET"])
 @login_required
@@ -103,7 +109,7 @@ def account_update():
     u.username = f.username.data
     
     if (f.password.data):
-        u.password = f.password.data
+        u.password = bcrypt.generate_password_hash(f.password.data)
 
     db.session().commit()
 

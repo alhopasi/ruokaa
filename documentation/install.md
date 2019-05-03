@@ -18,5 +18,5 @@
 - Tee kansiosta git-projekti komennolla: `git init`. Jos kloonasit projektin gitHubista, voit ohittaa tämän askeleen.
 - Luo Herokuun uusi sovellus komennolla: `heroku create <nimi>`
 - Lisätään gitiin tieto Herokusta komennolla: `git remote add heroku https://git.heroku.com/<nimi>.git`
-- Lähetetään projekti Herokuun komennolla: `git add .`, `git commit -m "Initial commit"` ja `git push heroku master`.
+- Lähetetään projekti Herokuun komennolla: `git add .` sekä `git commit -m "Initial commit"` ja `git push heroku master`.
 - Nyt sovelluksen pitäisi olla toimivana osoitteessa `https://<nimi>.herokuapp.com`

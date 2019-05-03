@@ -9,6 +9,7 @@
 [Puuttuvat ominaisuudet](documentation/todo.md "Puuttuvat ominaisuudet")
 [Tietokanta](documentation/database.md "Tietokanta"), 
 [Käyttötapauksia](documentation/user_stories.md "Käyttötapauksia")
+[Pohdintaa](documentation/thoughts.md "Pohdintaa")
 
 Voit luoda oman käyttäjän tai kokeilla testikäyttäjällä:
 

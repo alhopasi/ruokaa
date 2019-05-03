@@ -1,7 +1,5 @@
 # Tietokanta
 
-- Tässä on joitakin käyttötapauksia. Ohjelma on kuitenkin paljon laajempi, kuin mitä näistä selviää.
-
 ## Tietokannan normalisointi
 
 - Tietokanta on pääosin normaalimuodossa. Ainoa, mikä ei ole, on ruokien kesto. Tämä on jätetty normalisoimatta, koska tämä on jokaiselle ruoalle omansa ja jokaisella ruoalla on vain yksi kesto. Kesto myös tarvitsee näyttää jokaisella sivulla jolla ruokakin on, joten tämä vähentää tarvetta sql-kyselyille. Vaikka ruokien kestossa esiintyykin toistoa tällä hetkellä, koin että denormalisointi on tässä kohtaa hyödyllisempää.
